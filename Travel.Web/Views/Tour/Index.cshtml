@@ -1,0 +1,1354 @@
+﻿@using Travel.Web.DTOs.TourDtos
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Text.Json
+
+@model List<ResultTourDto>
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["PageTitle"].Value;
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+
+    var text = new
+    {
+        FilterTours = Localizer["FilterTours"].Value,
+        FilterDescription = Localizer["FilterDescription"].Value,
+        SearchTours = Localizer["SearchTours"].Value,
+        SearchPlaceholder = Localizer["SearchPlaceholder"].Value,
+        Destination = Localizer["Destination"].Value,
+        TourDuration = Localizer["TourDuration"].Value,
+        PriceRange = Localizer["PriceRange"].Value,
+        TourType = Localizer["TourType"].Value,
+        Rating = Localizer["Rating"].Value,
+        ApplyFilters = Localizer["ApplyFilters"].Value,
+        ClearFilters = Localizer["ClearFilters"].Value,
+        AddToFavorites = Localizer["AddToFavorites"].Value,
+        Days = Localizer["Days"].Value,
+        Nights = Localizer["Nights"].Value,
+        PerPerson = Localizer["PerPerson"].Value,
+        TourDetails = Localizer["TourDetails"].Value,
+
+        France = Localizer["France"].Value,
+        Italy = Localizer["Italy"].Value,
+        Spain = Localizer["Spain"].Value,
+        Netherlands = Localizer["Netherlands"].Value,
+        Austria = Localizer["Austria"].Value,
+        Switzerland = Localizer["Switzerland"].Value,
+        Norway = Localizer["Norway"].Value,
+        Japan = Localizer["Japan"].Value,
+        Portugal = Localizer["Portugal"].Value,
+
+        Days1To3 = Localizer["Days1To3"].Value,
+        Days4To5 = Localizer["Days4To5"].Value,
+        Days6To7 = Localizer["Days6To7"].Value,
+        Days8Plus = Localizer["Days8Plus"].Value,
+
+        Price1 = Localizer["Price1"].Value,
+        Price2 = Localizer["Price2"].Value,
+        Price3 = Localizer["Price3"].Value,
+        Price4 = Localizer["Price4"].Value,
+
+        CultureTours = Localizer["CultureTours"].Value,
+        CityTours = Localizer["CityTours"].Value,
+        NatureAdventure = Localizer["NatureAdventure"].Value,
+        RomanticRoutes = Localizer["RomanticRoutes"].Value,
+        Gastronomy = Localizer["Gastronomy"].Value,
+        WinterNorthernLights = Localizer["WinterNorthernLights"].Value,
+        FarEast = Localizer["FarEast"].Value,
+
+        Rating45 = Localizer["Rating45"].Value,
+        Rating40 = Localizer["Rating40"].Value,
+        Rating35 = Localizer["Rating35"].Value
+    };
+}
+
+<style>
+    /* PAGE HEADER */
+    .page-head {
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        background: linear-gradient(120deg, rgba(14,42,59,.92) 0%, rgba(18,56,76,.85) 55%, rgba(11,127,128,.78) 100%), url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=2000&q=80') center/cover;
+        padding: 4rem 0 4.6rem;
+    }
+
+        .page-head .eyebrow {
+            color: #7fe3e3;
+        }
+
+        .page-head h1 {
+            font-weight: 800;
+            font-size: clamp(2rem,4vw,3.1rem);
+            letter-spacing: -.5px;
+            margin-top: .5rem;
+        }
+
+        .page-head p {
+            color: rgba(255,255,255,.9);
+            max-width: 56ch;
+            margin-top: .7rem;
+        }
+
+    .breadcrumbz {
+        font-size: .85rem;
+        color: rgba(255,255,255,.7);
+    }
+
+        .breadcrumbz a {
+            color: rgba(255,255,255,.7);
+        }
+
+            .breadcrumbz a:hover {
+                color: #fff;
+            }
+
+    /* LAYOUT */
+    .listing {
+        padding: 3rem 0 4rem;
+    }
+
+    /* SIDEBAR */
+    .filter-card {
+        background: #fff;
+        border-radius: var(--r);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid rgba(231,226,216,.7);
+        padding: 1.5rem 1.4rem;
+    }
+
+        .filter-card h2 {
+            font-family: 'Sora';
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--navy);
+            margin-bottom: .2rem;
+        }
+
+    .filter-sub {
+        font-size: .82rem;
+        color: var(--muted);
+        margin-bottom: 1.3rem;
+    }
+
+    .filter-group {
+        padding: 1.1rem 0;
+        border-top: 1px solid var(--line);
+    }
+
+        .filter-group:first-of-type {
+            border-top: none;
+            padding-top: .3rem;
+        }
+
+        .filter-group h3 {
+            font-family: 'Sora';
+            font-weight: 600;
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--navy);
+            margin-bottom: .85rem;
+        }
+
+    .search-wrap {
+        position: relative;
+    }
+
+        .search-wrap svg {
+            position: absolute;
+            left: .85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .search-wrap input {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: .65rem .9rem .65rem 2.4rem;
+            font-size: .9rem;
+            color: var(--navy);
+            outline: none;
+            background: var(--cream);
+            transition: .2s;
+        }
+
+            .search-wrap input:focus {
+                border-color: var(--teal);
+                background: #fff;
+                box-shadow: 0 0 0 3px rgba(15,163,163,.12);
+            }
+
+    .fcheck {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: .6rem;
+        cursor: pointer;
+    }
+
+        .fcheck:last-child {
+            margin-bottom: 0;
+        }
+
+        .fcheck .lbl {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            font-size: .92rem;
+            color: var(--navy);
+        }
+
+        .fcheck input {
+            width: 17px;
+            height: 17px;
+            accent-color: var(--teal-dark);
+            cursor: pointer;
+        }
+
+        .fcheck .cnt {
+            font-size: .78rem;
+            color: var(--muted);
+        }
+
+    .stars-opt {
+        color: #f4a92c;
+        letter-spacing: 1px;
+    }
+
+        .stars-opt .off {
+            color: #d8cfc0;
+        }
+
+    .filter-actions {
+        padding-top: 1.2rem;
+        border-top: 1px solid var(--line);
+        margin-top: .3rem;
+    }
+
+        .filter-actions .btn-teal {
+            width: 100%;
+        }
+
+    .clear-link {
+        display: block;
+        text-align: center;
+        margin-top: .8rem;
+        font-size: .88rem;
+        color: var(--muted);
+        font-weight: 600;
+        background: none;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+    }
+
+        .clear-link:hover {
+            color: var(--teal-dark);
+        }
+
+    /* TOOLBAR */
+    .toolbar {
+        background: #fff;
+        border-radius: var(--r);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid rgba(231,226,216,.7);
+        padding: 1rem 1.3rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.4rem;
+    }
+
+        .toolbar h2 {
+            font-family: 'Sora';
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--navy);
+            margin: 0;
+        }
+
+        .toolbar .count {
+            font-size: .86rem;
+            color: var(--muted);
+            margin-top: .1rem;
+        }
+
+    .sort-wrap {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+    }
+
+        .sort-wrap label {
+            font-size: .85rem;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .sort-wrap select {
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: .5rem 2rem .5rem 1rem;
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--navy);
+            background: #fff;
+            outline: none;
+            cursor: pointer;
+        }
+
+            .sort-wrap select:focus {
+                border-color: var(--teal);
+            }
+
+    .btn-filter-mobile {
+        background: var(--navy);
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        font-weight: 600;
+        padding: .55rem 1.1rem;
+        font-size: .88rem;
+    }
+
+    /* ACTIVE CHIPS */
+    .active-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        background: rgba(15,163,163,.1);
+        color: var(--teal-dark);
+        font-size: .82rem;
+        font-weight: 600;
+        padding: .35rem .8rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+        .chip:hover {
+            background: rgba(15,163,163,.2);
+        }
+
+        .chip .x {
+            font-weight: 700;
+        }
+
+    /* TOUR CARD */
+    .tour-card {
+        background: #fff;
+        border-radius: var(--r);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: .3s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgba(231,226,216,.7);
+    }
+
+        .tour-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+    .tour-media {
+        position: relative;
+        height: 210px;
+        overflow: hidden;
+    }
+
+        .tour-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .5s;
+        }
+
+    .tour-card:hover .tour-media img {
+        transform: scale(1.07);
+    }
+
+    .tour-badge {
+        position: absolute;
+        top: .85rem;
+        left: .85rem;
+        background: rgba(255,255,255,.94);
+        color: var(--navy);
+        font-weight: 600;
+        font-size: .75rem;
+        padding: .32rem .7rem;
+        border-radius: 999px;
+    }
+
+    .fav {
+        position: absolute;
+        top: .75rem;
+        right: .85rem;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.92);
+        display: grid;
+        place-items: center;
+        color: var(--navy);
+        cursor: pointer;
+        border: none;
+        transition: .2s;
+    }
+
+        .fav:hover {
+            color: var(--teal-dark);
+            transform: scale(1.08);
+        }
+
+        .fav.on {
+            color: #e0575b;
+        }
+
+            .fav.on svg {
+                fill: currentColor;
+            }
+
+    .tour-body {
+        padding: 1.2rem 1.3rem 1.35rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .tour-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: .15rem;
+    }
+
+    .tour-country {
+        font-size: .78rem;
+        color: var(--teal-dark);
+        font-weight: 600;
+    }
+
+    .tour-cat {
+        font-size: .72rem;
+        color: var(--muted);
+        background: var(--cream);
+        border: 1px solid var(--line);
+        padding: .15rem .55rem;
+        border-radius: 999px;
+    }
+
+    .tour-title {
+        font-family: 'Sora';
+        font-weight: 700;
+        font-size: 1.12rem;
+        margin: .15rem 0 .5rem;
+        color: var(--navy);
+    }
+
+    .tour-meta {
+        display: flex;
+        align-items: center;
+        gap: .9rem;
+        font-size: .84rem;
+        color: var(--muted);
+        margin-bottom: .95rem;
+    }
+
+    .rating {
+        color: #0e2a3b;
+        font-weight: 600;
+    }
+
+        .rating .star {
+            color: #f4a92c;
+        }
+
+    .tour-foot {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-top: auto;
+        padding-top: .5rem;
+        border-top: 1px solid var(--line);
+    }
+
+    .price small {
+        color: var(--muted);
+        font-size: .72rem;
+        display: block;
+    }
+
+    .price b {
+        font-family: 'Sora';
+        font-size: 1.28rem;
+        color: var(--navy);
+    }
+
+        .price b span {
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+    .btn-incele {
+        background: var(--navy);
+        color: #fff;
+        border-radius: 999px;
+        font-size: .85rem;
+        font-weight: 600;
+        padding: .55rem 1.1rem;
+        border: none;
+        transition: .25s;
+    }
+
+        .btn-incele:hover {
+            background: var(--teal-dark);
+            color: #fff;
+        }
+
+    /* EMPTY */
+    .empty-state {
+        background: #fff;
+        border-radius: var(--r);
+        border: 1px solid rgba(231,226,216,.7);
+        box-shadow: var(--shadow-sm);
+        padding: 3.5rem 2rem;
+        text-align: center;
+    }
+
+        .empty-state .ico {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: rgba(15,163,163,.1);
+            color: var(--teal-dark);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 1.2rem;
+        }
+
+        .empty-state h3 {
+            font-family: 'Sora';
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1.3rem;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+            max-width: 40ch;
+            margin: .4rem auto 1.4rem;
+        }
+
+    /* PAGINATION */
+    .pager {
+        display: flex;
+        justify-content: center;
+        gap: .4rem;
+        margin-top: 2.6rem;
+    }
+
+        .pager a {
+            min-width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--line);
+            color: var(--navy);
+            font-weight: 600;
+            font-size: .92rem;
+            transition: .2s;
+            padding: 0 .4rem;
+        }
+
+            .pager a:hover {
+                border-color: var(--teal);
+                color: var(--teal-dark);
+            }
+
+            .pager a.active {
+                background: var(--navy);
+                color: #fff;
+                border-color: var(--navy);
+            }
+
+            .pager a.nav-arrow {
+                color: var(--muted);
+            }
+
+    /* MINI CTA */
+    .mini-cta {
+        background: var(--navy);
+        border-radius: 24px;
+        padding: 2.8rem 2rem;
+        text-align: center;
+        color: #fff;
+        margin-top: 3.5rem;
+    }
+
+        .mini-cta .eyebrow {
+            color: #7fe3e3;
+        }
+
+        .mini-cta h2 {
+            font-weight: 700;
+            font-size: clamp(1.5rem,2.6vw,2.1rem);
+            letter-spacing: -.5px;
+            margin-top: .5rem;
+        }
+
+        .mini-cta p {
+            color: rgba(255,255,255,.82);
+            max-width: 50ch;
+            margin: .8rem auto 1.5rem;
+        }
+
+    /* OFFCANVAS */
+    .offcanvas {
+        background: var(--cream);
+    }
+
+    .sticky-side {
+        position: sticky;
+        top: 90px;
+    }
+
+    @@media (max-width: 991px) {
+        .sticky-side {
+            position: static;
+        }
+    }
+</style>
+
+<!-- PAGE HEADER -->
+<header class="page-head">
+    <div class="container">
+        <div class="breadcrumbz mb-3">
+            <a href="/Home/Index">@Localizer["Home"]</a> · @Localizer["Tours"]
+        </div>
+
+        <div class="eyebrow">@Localizer["DiscoverTheWorld"]</div>
+
+        <h1>@Localizer["HeroTitle"]</h1>
+
+        <p>@Localizer["HeroDescription"]</p>
+    </div>
+</header>
+
+<!-- LISTING -->
+<section class="listing">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- SIDEBAR -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="sticky-side">
+                    <div class="filter-card" id="filterCardDesktop"></div>
+                </div>
+            </div>
+
+            <!-- RESULTS -->
+            <div class="col-lg-9">
+
+                <!-- TOOLBAR -->
+                <div class="toolbar">
+                    <div>
+                        <h2>@Localizer["Tours"]</h2>
+                        <div class="count">
+                            <span id="resultCount">0</span>
+                            <span>@Localizer["ToursFound"]</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn-filter-mobile d-lg-none"
+                                type="button"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#filterOffcanvas">
+                            @Localizer["Filter"]
+                        </button>
+
+                        <div class="sort-wrap">
+                            <label for="sortSelect" class="d-none d-sm-block">
+                                @Localizer["Sort"]
+                            </label>
+
+                            <select id="sortSelect">
+                                <option value="onerilen">@Localizer["Recommended"]</option>
+                                <option value="puan">@Localizer["HighestRated"]</option>
+                                <option value="fiyat-artan">@Localizer["PriceLowToHigh"]</option>
+                                <option value="fiyat-azalan">@Localizer["PriceHighToLow"]</option>
+                                <option value="yeni">@Localizer["NewestTours"]</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIVE CHIPS -->
+                <div class="active-chips" id="activeChips"></div>
+
+                <!-- GRID -->
+                <div class="row g-4" id="tourGrid"></div>
+
+                <!-- EMPTY -->
+                <div id="emptyState" style="display:none">
+                    <div class="empty-state">
+                        <div class="ico">
+                            <svg width="28" height="28"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21"
+                                      x2="16.65" y2="16.65" />
+                            </svg>
+                        </div>
+
+                        <h3>@Localizer["EmptyTitle"]</h3>
+                        <p>@Localizer["EmptyDescription"]</p>
+
+                        <button class="btn-teal" type="button" onclick="clearFilters()">
+                            @Localizer["ClearFilters"]
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PAGINATION -->
+                <nav class="pager" id="pager">
+                    <a href="#" class="nav-arrow" aria-label="@Localizer["Previous"]">←</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#" class="nav-arrow" aria-label="@Localizer["Next"]">→</a>
+                </nav>
+
+                <!-- MINI CTA -->
+                <div class="mini-cta">
+                    <div class="eyebrow">@Localizer["HelpUs"]</div>
+
+                    <h2>@Localizer["MissingRouteTitle"]</h2>
+
+                    <p>@Localizer["MissingRouteDescription"]</p>
+
+                    <a href="/Home/Index#iletisim" class="btn-teal">
+                        @Localizer["ContactUs"]
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OFFCANVAS FILTERS -->
+<div class="offcanvas offcanvas-start"
+     tabindex="-1"
+     id="filterOffcanvas"
+     style="width:320px">
+
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title"
+            style="font-family:'Sora';font-weight:700;color:var(--navy)">
+            @Localizer["Filter"]
+        </h5>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="@Localizer["Close"]">
+        </button>
+    </div>
+
+    <div class="offcanvas-body">
+        <div class="filter-card"
+             id="filterCardMobile"
+             style="box-shadow:none;border:none;padding:0">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const TOURS = @Html.Raw(JsonSerializer.Serialize(Model));
+        const TEXT = @Html.Raw(JsonSerializer.Serialize(text));
+
+        function normalize(value) {
+            return (value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLocaleLowerCase("tr-TR")
+                .trim();
+        }
+
+        // Filtre değerleri sabit tutulur; ekranda gösterilen etiketler çevrilir.
+        const DEST_OPTS = [
+            { key: "fransa", value: "Fransa", label: TEXT.France },
+            { key: "italya", value: "İtalya", label: TEXT.Italy },
+            { key: "ispanya", value: "İspanya", label: TEXT.Spain },
+            { key: "hollanda", value: "Hollanda", label: TEXT.Netherlands },
+            { key: "avusturya", value: "Avusturya", label: TEXT.Austria },
+            { key: "isvicre", value: "İsviçre", label: TEXT.Switzerland },
+            { key: "norvec", value: "Norveç", label: TEXT.Norway },
+            { key: "japonya", value: "Japonya", label: TEXT.Japan },
+            { key: "portekiz", value: "Portekiz", label: TEXT.Portugal }
+        ];
+
+        const DUR_OPTS = [
+            { key: "1-3", label: TEXT.Days1To3, min: 1, max: 3 },
+            { key: "4-5", label: TEXT.Days4To5, min: 4, max: 5 },
+            { key: "6-7", label: TEXT.Days6To7, min: 6, max: 7 },
+            { key: "8+", label: TEXT.Days8Plus, min: 8, max: 99 }
+        ];
+
+        const PRICE_OPTS = [
+            { key: "p1", label: TEXT.Price1, min: 0, max: 25000 },
+            { key: "p2", label: TEXT.Price2, min: 25000, max: 40000 },
+            { key: "p3", label: TEXT.Price3, min: 40000, max: 60000 },
+            { key: "p4", label: TEXT.Price4, min: 60000, max: 9999999 }
+        ];
+
+        const TYPE_OPTS = [
+            { value: "Kültür Turları", label: TEXT.CultureTours },
+            { value: "Şehir Turları", label: TEXT.CityTours },
+            { value: "Doğa & Macera", label: TEXT.NatureAdventure },
+            { value: "Romantik Rotalar", label: TEXT.RomanticRoutes },
+            { value: "Gastronomi", label: TEXT.Gastronomy },
+            { value: "Kış & Kuzey Işıkları", label: TEXT.WinterNorthernLights },
+            { value: "Uzak Doğu", label: TEXT.FarEast }
+        ];
+
+        const RATING_OPTS = [
+            { key: "r45", label: TEXT.Rating45, val: 4.5, stars: 5 },
+            { key: "r40", label: TEXT.Rating40, val: 4.0, stars: 4 },
+            { key: "r35", label: TEXT.Rating35, val: 3.5, stars: 3 }
+        ];
+
+        const state = {
+            q: "",
+            dest: [],
+            dur: [],
+            price: [],
+            type: [],
+            rating: null,
+            sort: "onerilen"
+        };
+
+        function destCount(key) {
+            const option = DEST_OPTS.find(d => d.key === key);
+            if (!option) return 0;
+
+            return TOURS.filter(t =>
+                normalize(t.DestinationCountry) === normalize(option.value)
+            ).length;
+        }
+
+        function starsMarkup(n) {
+            let result = "";
+
+            for (let i = 1; i <= 5; i++) {
+                result += i <= n
+                    ? "★"
+                    : "<span class='off'>★</span>";
+            }
+
+            return result;
+        }
+
+        function sidebarHTML() {
+            return `
+                <h2>${TEXT.FilterTours}</h2>
+                <p class="filter-sub">${TEXT.FilterDescription}</p>
+
+                <form class="filter-form" onsubmit="return false;">
+                    <div class="filter-group">
+                        <h3>${TEXT.SearchTours}</h3>
+
+                        <div class="search-wrap">
+                            <svg width="16" height="16"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21"
+                                      x2="16.65" y2="16.65"/>
+                            </svg>
+
+                            <input type="text"
+                                   class="f-search"
+                                   placeholder="${TEXT.SearchPlaceholder}"
+                                   name="Search"/>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h3>${TEXT.Destination}</h3>
+
+                        ${DEST_OPTS.map(o => `
+                            <label class="fcheck">
+                                <span class="lbl">
+                                    <input type="checkbox"
+                                           class="f-dest"
+                                           value="${o.key}">
+                                    ${o.label}
+                                </span>
+                                <span class="cnt">(${destCount(o.key)})</span>
+                            </label>
+                        `).join("")}
+                    </div>
+
+                    <div class="filter-group">
+                        <h3>${TEXT.TourDuration}</h3>
+
+                        ${DUR_OPTS.map(o => `
+                            <label class="fcheck">
+                                <span class="lbl">
+                                    <input type="checkbox"
+                                           class="f-dur"
+                                           value="${o.key}">
+                                    ${o.label}
+                                </span>
+                            </label>
+                        `).join("")}
+                    </div>
+
+                    <div class="filter-group">
+                        <h3>${TEXT.PriceRange}</h3>
+
+                        ${PRICE_OPTS.map(o => `
+                            <label class="fcheck">
+                                <span class="lbl">
+                                    <input type="checkbox"
+                                           class="f-price"
+                                           value="${o.key}">
+                                    ${o.label}
+                                </span>
+                            </label>
+                        `).join("")}
+                    </div>
+
+                    <div class="filter-group">
+                        <h3>${TEXT.TourType}</h3>
+
+                        ${TYPE_OPTS.map(o => `
+                            <label class="fcheck">
+                                <span class="lbl">
+                                    <input type="checkbox"
+                                           class="f-type"
+                                           value="${o.value}">
+                                    ${o.label}
+                                </span>
+                            </label>
+                        `).join("")}
+                    </div>
+
+                    <div class="filter-group">
+                        <h3>${TEXT.Rating}</h3>
+
+                        ${RATING_OPTS.map(o => `
+                            <label class="fcheck">
+                                <span class="lbl">
+                                    <input type="radio"
+                                           class="f-rating"
+                                           name="rating"
+                                           value="${o.key}">
+                                    <span class="stars-opt">${starsMarkup(o.stars)}</span>
+                                </span>
+                                <span class="cnt">${o.label}</span>
+                            </label>
+                        `).join("")}
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-teal"
+                                type="button"
+                                onclick="applyFromButton()">
+                            ${TEXT.ApplyFilters}
+                        </button>
+                    </div>
+                </form>
+
+                <button class="clear-link"
+                        type="button"
+                        onclick="clearFilters()">
+                    ${TEXT.ClearFilters}
+                </button>
+            `;
+        }
+
+        document.getElementById("filterCardDesktop").innerHTML = sidebarHTML();
+        document.getElementById("filterCardMobile").innerHTML = sidebarHTML();
+
+        function syncState() {
+            const searchInput = document.querySelector(".f-search");
+            state.q = (searchInput?.value || "").trim().toLocaleLowerCase();
+
+            state.dest = [...new Set(
+                [...document.querySelectorAll(".f-dest:checked")].map(i => i.value)
+            )];
+
+            state.dur = [...new Set(
+                [...document.querySelectorAll(".f-dur:checked")].map(i => i.value)
+            )];
+
+            state.price = [...new Set(
+                [...document.querySelectorAll(".f-price:checked")].map(i => i.value)
+            )];
+
+            state.type = [...new Set(
+                [...document.querySelectorAll(".f-type:checked")].map(i => i.value)
+            )];
+
+            const rating = document.querySelector(".f-rating:checked");
+            state.rating = rating ? rating.value : null;
+        }
+
+        function getFiltered() {
+            let list = TOURS.filter(t => {
+                // Tur adı, başlangıç şehri veya rota içinde ara.
+                if (state.q) {
+                    const hay = [
+                        t.Name,
+                        t.StartingCity,
+                        t.TourRoute
+                    ].filter(Boolean).join(" ").toLocaleLowerCase();
+
+                    if (!hay.includes(state.q)) return false;
+                }
+
+                // Destinasyon filtresi.
+                if (state.dest.length) {
+                    const country = normalize(t.DestinationCountry);
+
+                    const ok = state.dest.some(key => {
+                        const option = DEST_OPTS.find(d => d.key === key);
+                        return option && country === normalize(option.value);
+                    });
+
+                    if (!ok) return false;
+                }
+
+                // Tur süresi filtresi.
+                if (state.dur.length) {
+                    const duration = Number.parseInt(t.DayTimeDuration, 10);
+
+                    const ok = state.dur.some(key => {
+                        const option = DUR_OPTS.find(d => d.key === key);
+
+                        return option &&
+                            !Number.isNaN(duration) &&
+                            duration >= option.min &&
+                            duration <= option.max;
+                    });
+
+                    if (!ok) return false;
+                }
+
+                // Fiyat filtresi.
+                if (state.price.length) {
+                    const price = Number(t.Price);
+
+                    const ok = state.price.some(key => {
+                        const option = PRICE_OPTS.find(p => p.key === key);
+
+                        return option &&
+                            price >= option.min &&
+                            price <= option.max;
+                    });
+
+                    if (!ok) return false;
+                }
+
+                // Tur tipi filtresi.
+                if (state.type.length) {
+                    const tourType = normalize(t.TourType);
+
+                    if (!state.type.some(type => tourType === normalize(type))) {
+                        return false;
+                    }
+                }
+
+                // Puan filtresi için modelde puan alanı bulunuyorsa kullanılır.
+                if (state.rating) {
+                    const ratingOption = RATING_OPTS.find(r => r.key === state.rating);
+
+                    if (ratingOption) {
+                        const tourRating = Number(t.Rating ?? t.AverageRating ?? 0);
+
+                        if (tourRating < ratingOption.val) return false;
+                    }
+                }
+
+                return true;
+            });
+
+            // Sıralama.
+            if (state.sort === "fiyat-artan") {
+                list.sort((a, b) => Number(a.Price) - Number(b.Price));
+            } else if (state.sort === "fiyat-azalan") {
+                list.sort((a, b) => Number(b.Price) - Number(a.Price));
+            } else if (state.sort === "puan") {
+                list.sort((a, b) =>
+                    Number(b.Rating ?? b.AverageRating ?? 0) -
+                    Number(a.Rating ?? a.AverageRating ?? 0)
+                );
+            } else if (state.sort === "yeni") {
+                list.sort((a, b) =>
+                    new Date(b.CreatedDate || 0) - new Date(a.CreatedDate || 0)
+                );
+            }
+
+            return list;
+        }
+
+        function fmt(n) {
+            const culture = document.documentElement.lang?.toLowerCase().startsWith("en")
+                ? "en-US"
+                : "tr-TR";
+
+            return Number(n || 0).toLocaleString(culture);
+        }
+
+        function cardHTML(t) {
+            return `
+                <div class="col-md-6">
+                    <article class="tour-card">
+                        <div class="tour-media">
+                            <a href="/Tour/Details/${t.Id}">
+                                <img src="${t.ImageUrl || '/images/default-tour.jpg'}"
+                                     alt="${t.Name || ''}"
+                                     loading="lazy" />
+                            </a>
+
+                            <span class="tour-badge">${t.TourType || ''}</span>
+
+                            <button class="fav"
+                                    type="button"
+                                    aria-label="${TEXT.AddToFavorites}"
+                                    onclick="this.classList.toggle('on')">
+                                ♥
+                            </button>
+                        </div>
+
+                        <div class="tour-body">
+                            <div class="tour-topline">
+                                <span class="tour-country">${t.StartingCity || ''}</span>
+                                <span class="tour-cat">${t.TourType || ''}</span>
+                            </div>
+
+                            <h3 class="tour-title">${t.Name || ''}</h3>
+
+                            <div class="tour-meta">
+                                <span>
+                                    🗓️ ${t.DayTimeDuration || ''} ${TEXT.Days} /
+                                    ${t.NightTimeDuration || ''} ${TEXT.Nights}
+                                </span>
+                            </div>
+
+                            <div class="tour-foot">
+                                <div class="price">
+                                    <small>${TEXT.PerPerson}</small>
+                                    <b>${fmt(t.Price)} <span>TL</span></b>
+                                </div>
+
+                                <a href="/Tour/Details/${t.Id}" class="btn-incele">
+                                    ${TEXT.TourDetails}
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            `;
+        }
+
+        function chipsHTML() {
+            const chips = [];
+
+            state.dest.forEach(key => {
+                const option = DEST_OPTS.find(d => d.key === key);
+                if (option) chips.push({ text: option.label, kind: "dest", value: key });
+            });
+
+            state.dur.forEach(key => {
+                const option = DUR_OPTS.find(d => d.key === key);
+                if (option) chips.push({ text: option.label, kind: "dur", value: key });
+            });
+
+            state.price.forEach(key => {
+                const option = PRICE_OPTS.find(p => p.key === key);
+                if (option) chips.push({ text: option.label, kind: "price", value: key });
+            });
+
+            state.type.forEach(value => {
+                const option = TYPE_OPTS.find(t => t.value === value);
+
+                chips.push({
+                    text: option ? option.label : value,
+                    kind: "type",
+                    value
+                });
+            });
+
+            if (state.rating) {
+                const option = RATING_OPTS.find(r => r.key === state.rating);
+
+                if (option) {
+                    chips.push({
+                        text: option.label + " ★",
+                        kind: "rating",
+                        value: state.rating
+                    });
+                }
+            }
+
+            if (state.q) {
+                chips.push({
+                    text: '"' + state.q + '"',
+                    kind: "q",
+                    value: state.q
+                });
+            }
+
+            return chips.map(c => `
+                <span class="chip"
+                      onclick="removeChip(${JSON.stringify(c.kind)}, ${JSON.stringify(c.value)})">
+                    ${c.text}<span class="x">×</span>
+                </span>
+            `).join("");
+        }
+
+        function removeChip(kind, value) {
+            const selectors = {
+                dest: ".f-dest",
+                dur: ".f-dur",
+                price: ".f-price",
+                type: ".f-type"
+            };
+
+            if (selectors[kind]) {
+                document.querySelectorAll(selectors[kind]).forEach(input => {
+                    if (input.value === value) input.checked = false;
+                });
+            }
+
+            if (kind === "rating") {
+                document.querySelectorAll(".f-rating").forEach(input => {
+                    input.checked = false;
+                });
+            }
+
+            if (kind === "q") {
+                document.querySelectorAll(".f-search").forEach(input => {
+                    input.value = "";
+                });
+            }
+
+            syncState();
+            render();
+        }
+
+        function render() {
+            const list = getFiltered();
+            const grid = document.getElementById("tourGrid");
+            const empty = document.getElementById("emptyState");
+            const pager = document.getElementById("pager");
+
+            document.getElementById("resultCount").textContent = list.length;
+            document.getElementById("activeChips").innerHTML = chipsHTML();
+
+            if (list.length === 0) {
+                grid.innerHTML = "";
+                empty.style.display = "block";
+                pager.style.display = "none";
+            } else {
+                grid.innerHTML = list.map(cardHTML).join("");
+                empty.style.display = "none";
+                pager.style.display = list.length > 6 ? "flex" : "none";
+            }
+        }
+
+        document.addEventListener("input", event => {
+            if (event.target.matches(
+                ".f-search, .f-dest, .f-dur, .f-price, .f-type, .f-rating"
+            )) {
+                const target = event.target;
+
+                // Masaüstü ve mobil filtre alanlarını senkron tut.
+                if (target.matches(".f-search")) {
+                    document.querySelectorAll(".f-search").forEach(input => {
+                        if (input !== target) input.value = target.value;
+                    });
+                } else {
+                    const className = [...target.classList].find(c => c.startsWith("f-"));
+
+                    if (className) {
+                        document.querySelectorAll("." + className).forEach(input => {
+                            if (input !== target && input.value === target.value) {
+                                input.checked = target.checked;
+                            }
+                        });
+                    }
+                }
+
+                syncState();
+                render();
+            }
+        });
+
+        document.getElementById("sortSelect").addEventListener("change", event => {
+            state.sort = event.target.value;
+            render();
+        });
+
+        function applyFromButton() {
+            syncState();
+            render();
+
+            const offcanvas = document.getElementById("filterOffcanvas");
+            const instance = bootstrap.Offcanvas.getInstance(offcanvas);
+
+            if (instance) instance.hide();
+        }
+
+        function clearFilters() {
+            document.querySelectorAll(".f-search").forEach(input => {
+                input.value = "";
+            });
+
+            document.querySelectorAll(
+                ".f-dest, .f-dur, .f-price, .f-type, .f-rating"
+            ).forEach(input => {
+                input.checked = false;
+            });
+
+            state.sort = "onerilen";
+            document.getElementById("sortSelect").value = "onerilen";
+
+            syncState();
+            render();
+        }
+
+        render();
+    </script>
+}

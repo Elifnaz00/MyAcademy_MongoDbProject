@@ -1,0 +1,1780 @@
+﻿@using Travel.Web.DTOs.TourDtos
+@using Travel.Web.Entities
+@using Travel.Web.Entities.Enums
+
+@model UpdateTourDto
+
+@{
+    ViewData["Title"] = "Tur Güncelle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --navy: #0e2a3b;
+        --navy2: #12384c;
+        --navy3: #1b455c;
+        --teal: #0fa3a3;
+        --teal-dark: #0b7f80;
+        --cream: #f7f5f0;
+        --bg: #f4f5f4;
+        --white: #ffffff;
+        --text: #263238;
+        --muted: #7a858c;
+        --border: #e2e7e8;
+        --danger: #d9534f;
+    }
+
+    .tour-page {
+        background: var(--bg);
+        min-height: 100vh;
+        padding: 30px;
+    }
+
+    .tour-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
+
+        .tour-header h1 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .tour-header p {
+            margin: 6px 0 0;
+            color: var(--muted);
+        }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-cancel {
+        background: white;
+        border: 1px solid var(--border);
+        color: var(--navy);
+        padding: 11px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .btn-save {
+        border: 0;
+        background: var(--teal);
+        color: white;
+        padding: 11px 20px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+        .btn-save:hover {
+            background: var(--teal-dark);
+        }
+
+    .tour-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        margin-bottom: 22px;
+        overflow: hidden;
+    }
+
+    .card-head {
+        padding: 20px 24px;
+        background: var(--cream);
+        border-bottom: 1px solid var(--border);
+    }
+
+        .card-head h3 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .card-head p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+    .card-body {
+        padding: 24px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 11px 13px;
+        color: var(--text);
+        background: white;
+        outline: none;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(15,163,163,.10);
+        }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .row-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .row-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .date-row,
+    .item-row {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 12px;
+        background: #fff;
+    }
+
+    .date-row-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr auto auto;
+        gap: 12px;
+        align-items: end;
+    }
+
+    .itinerary-item {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+
+    .itinerary-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 16px;
+        background: var(--cream);
+        cursor: pointer;
+    }
+
+        .itinerary-head strong {
+            color: var(--navy);
+        }
+
+    .itinerary-body {
+        padding: 18px;
+    }
+
+    .btn-add {
+        border: 1px dashed var(--teal);
+        background: transparent;
+        color: var(--teal-dark);
+        padding: 9px 15px;
+        border-radius: 9px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .btn-remove {
+        border: 0;
+        background: #fff1f0;
+        color: var(--danger);
+        padding: 9px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+    }
+
+    .list-section {
+        margin-bottom: 25px;
+    }
+
+    .list-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+        .list-title h4 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 15px;
+        }
+
+    .item-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+        .item-row .form-control {
+            flex: 1;
+        }
+
+    .upload-box {
+        border: 1px dashed #b9c4c8;
+        border-radius: 13px;
+        padding: 20px;
+        background: #fafbfb;
+    }
+
+    .existing-image {
+        margin-bottom: 15px;
+    }
+
+        .existing-image img {
+            max-width: 220px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+    .gallery-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+        .gallery-preview img {
+            width: 120px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+    .status-options {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .status-option {
+        border: 1px solid var(--border);
+        padding: 10px 15px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+        .status-option input {
+            margin-right: 6px;
+        }
+
+    .bottom-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-bottom: 30px;
+    }
+
+    .validation-message {
+        color: var(--danger);
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    @@media (max-width: 900px) {
+        .row-grid, .row-grid-3
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .date-row-grid {
+        grid-template-columns: 1fr;
+    }
+
+    }
+</style>
+
+<div class="tour-page">
+
+    <div class="tour-header">
+        <div>
+            <h1>Tur Güncelle</h1>
+            <p>Mevcut tur bilgilerini düzenleyin.</p>
+        </div>
+
+        <div class="header-actions">
+            <a asp-area="Admin"
+               asp-controller="Tour"
+               asp-action="Index"
+               class="btn-cancel">
+                İptal
+            </a>
+
+            <button type="button"
+                    class="btn-save"
+                    onclick="submitTour()">
+                Değişiklikleri Kaydet
+            </button>
+        </div>
+    </div>
+
+
+    <form method="post"
+          asp-area="Admin"
+          asp-controller="Tour"
+          asp-action="Edit"
+          enctype="multipart/form-data"
+          id="tourForm">
+
+        <input type="hidden" asp-for="Id" />
+
+
+        <!-- TEMEL BİLGİLER -->
+        <div class="tour-card">
+
+            <div class="card-head">
+                <h3>Temel Bilgiler</h3>
+                <p>Turun temel bilgilerini düzenleyin.</p>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row-grid">
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="form-label">
+                            Tur Adı
+                        </label>
+
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Tur adını giriniz..." />
+
+                        <span asp-validation-for="Name"
+                              class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="TourType" class="form-label">
+                            Tur Tipi
+                        </label>
+
+                        <input asp-for="TourType"
+                               class="form-control"
+                               placeholder="Örn: Kültür Turu" />
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="ShortImportantDescription"
+                           class="form-label">
+                        Kısa Önemli Açıklama
+                    </label>
+
+                    <input asp-for="ShortImportantDescription"
+                           class="form-control" />
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Description"
+                           class="form-label">
+                        Açıklama
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"></textarea>
+                </div>
+
+
+                <div class="row-grid">
+
+                    <div class="form-group">
+                        <label asp-for="DestinationId"
+                               class="form-label">
+                            Destinasyon
+                        </label>
+
+                        <select asp-for="DestinationId"
+                                asp-items="ViewBag.Destinations"
+                                class="form-select">
+                            <option value="">Destinasyon Seçiniz</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="CategoryId"
+                               class="form-label">
+                            Kategori
+                        </label>
+
+                        <select asp-for="CategoryId"
+                                asp-items="ViewBag.Categories"
+                                class="form-select">
+                            <option value="">Kategori Seçiniz</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="TourRoute"
+                           class="form-label">
+                        Tur Rotası
+                    </label>
+
+                    <input asp-for="TourRoute"
+                           class="form-control" />
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- FİYAT & KONTENJAN -->
+        <div class="tour-card">
+
+            <div class="card-head">
+                <h3>Fiyat & Kontenjan</h3>
+                <p>Tur fiyatı, süre ve kontenjan bilgileri.</p>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row-grid-3">
+
+                    <div class="form-group">
+                        <label asp-for="Price"
+                               class="form-label">
+                            Fiyat
+                        </label>
+
+                        <input asp-for="Price"
+                               type="number"
+                               step="0.01"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="MaxQuota"
+                               class="form-label">
+                            Maksimum Kontenjan
+                        </label>
+
+                        <input asp-for="MaxQuota"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="MinQuota"
+                               class="form-label">
+                            Minimum Kontenjan
+                        </label>
+
+                        <input asp-for="MinQuota"
+                               class="form-control" />
+                    </div>
+
+                </div>
+
+
+                <div class="row-grid-3">
+
+                    <div class="form-group">
+                        <label asp-for="DayTimeDuration"
+                               class="form-label">
+                            Gündüz Süresi
+                        </label>
+
+                        <input asp-for="DayTimeDuration"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="NightTimeDuration"
+                               class="form-label">
+                            Gece Süresi
+                        </label>
+
+                        <input asp-for="NightTimeDuration"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="StartingCity"
+                               class="form-label">
+                            Başlangıç Şehri
+                        </label>
+
+                        <input asp-for="StartingCity"
+                               class="form-control" />
+                    </div>
+
+                </div>
+
+
+                <div class="row-grid">
+
+                    <div class="form-group">
+                        <label asp-for="TransportType"
+                               class="form-label">
+                            Ulaşım Tipi
+                        </label>
+
+                        <input asp-for="TransportType"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Accomodation"
+                               class="form-label">
+                            Konaklama
+                        </label>
+
+                        <input asp-for="Accomodation"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="GuideLanguage"
+                               class="form-label">
+                            Rehber Dili
+                        </label>
+
+                        <input asp-for="GuideLanguage"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="VisaInformation"
+                               class="form-label">
+                            Vize Bilgisi
+                        </label>
+
+                        <input asp-for="VisaInformation"
+                               class="form-control" />
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- TUR TARİHLERİ -->
+        <div class="tour-card">
+
+            <div class="card-head">
+                <h3>Tur Tarihleri</h3>
+                <p>Mevcut tur tarihlerini düzenleyebilir veya yeni tarih ekleyebilirsiniz.</p>
+            </div>
+
+            <div class="card-body">
+
+                <div id="dateList">
+
+                    @{
+                        var dateIndex = 0;
+                    }
+
+                    @if (Model.TourDates != null && Model.TourDates.Any())
+                    {
+                        foreach (var date in Model.TourDates)
+                        {
+                            <div class="date-row">
+
+                                <div class="date-row-grid">
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Başlangıç
+                                        </label>
+
+                                        <input type="date"
+                                               name="TourDates[@dateIndex].StartDate"
+                                               value="@date.StartDate.ToString("yyyy-MM-dd")"
+                                               class="form-control" />
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Bitiş
+                                        </label>
+
+                                        <input type="date"
+                                               name="TourDates[@dateIndex].EndDate"
+                                               value="@date.EndDate.ToString("yyyy-MM-dd")"
+                                               class="form-control" />
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Kontenjan
+                                        </label>
+
+                                        <input type="number"
+                                               name="TourDates[@dateIndex].Quota"
+                                               value="@date.Quota"
+                                               class="form-control" />
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label class="form-label">
+                                            Aktif
+                                        </label>
+
+                                        <input type="hidden"
+                                               name="TourDates[@dateIndex].IsActive"
+                                               value="false" />
+
+                                        <input type="checkbox"
+                                               name="TourDates[@dateIndex].IsActive"
+                                               value="true"
+                                               @(date.IsActive ? "checked" : "") />
+                                    </div>
+
+
+                                    <button type="button"
+                                            class="btn-remove"
+                                            onclick="removeDate(this)">
+                                        Sil
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            dateIndex++;
+                        }
+                    }
+                    else
+                    {
+                        <div class="date-row">
+
+                            <div class="date-row-grid">
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Başlangıç
+                                    </label>
+
+                                    <input type="date"
+                                           name="TourDates[0].StartDate"
+                                           class="form-control" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Bitiş
+                                    </label>
+
+                                    <input type="date"
+                                           name="TourDates[0].EndDate"
+                                           class="form-control" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Kontenjan
+                                    </label>
+
+                                    <input type="number"
+                                           name="TourDates[0].Quota"
+                                           class="form-control" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Aktif
+                                    </label>
+
+                                    <input type="hidden"
+                                           name="TourDates[0].IsActive"
+                                           value="false" />
+
+                                    <input type="checkbox"
+                                           name="TourDates[0].IsActive"
+                                           value="true" />
+                                </div>
+
+                                <button type="button"
+                                        class="btn-remove"
+                                        onclick="removeDate(this)">
+                                    Sil
+                                </button>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+
+                <button type="button"
+                        class="btn-add"
+                        onclick="addDate()">
+                    + Yeni Tarih Ekle
+                </button>
+
+            </div>
+        </div>
+
+
+        <!-- GÜN GÜN PROGRAM -->
+        <div class="tour-card">
+
+            <div class="card-head">
+                <h3>Gün Gün Tur Programı</h3>
+                <p>Tur programındaki günleri düzenleyin.</p>
+            </div>
+
+            <div class="card-body">
+
+                <div id="itineraryList">
+
+                    @{
+                        var itineraryIndex = 0;
+                    }
+
+                    @if (Model.Itineraries != null && Model.Itineraries.Any())
+                    {
+                        foreach (var itinerary in Model.Itineraries)
+                        {
+                            <div class="itinerary-item">
+
+                                <div class="itinerary-head"
+                                     onclick="toggleItinerary(this)">
+
+                                    <strong>
+                                        Gün @itinerary.Day
+                                        -
+                                        @itinerary.DayTitle
+                                    </strong>
+
+                                    <span>⌄</span>
+
+                                </div>
+
+                                <div class="itinerary-body">
+
+                                    <input type="hidden"
+                                           name="Itineraries[@itineraryIndex].Day"
+                                           value="@itinerary.Day" />
+
+                                    <div class="row-grid">
+
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                Gün Başlığı
+                                            </label>
+
+                                            <input type="text"
+                                                   name="Itineraries[@itineraryIndex].DayTitle"
+                                                   value="@itinerary.DayTitle"
+                                                   class="form-control" />
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                Konaklama
+                                            </label>
+
+                                            <input type="text"
+                                                   name="Itineraries[@itineraryIndex].Accomodation"
+                                                   value="@itinerary.Accomodation"
+                                                   class="form-control" />
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label class="form-label">
+                                            Program Açıklaması
+                                        </label>
+
+                                        <textarea name="Itineraries[@itineraryIndex].ProgramDescription"
+                                          class="form-control">@itinerary.ProgramDescription</textarea>
+
+                                    </div>
+
+
+                                    <div class="row-grid">
+
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                Ulaşım
+                                            </label>
+
+                                            <input type="text"
+                                                   name="Itineraries[@itineraryIndex].TransportType"
+                                                   value="@itinerary.TransportType"
+                                                   class="form-control" />
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                Öğün
+                                            </label>
+
+                                            <input type="text"
+                                                   name="Itineraries[@itineraryIndex].Meal"
+                                                   value="@itinerary.Meal"
+                                                   class="form-control" />
+                                        </div>
+
+                                    </div>
+
+
+                                    <button type="button"
+                                            class="btn-remove"
+                                            onclick="removeItinerary(this)">
+                                        Günü Sil
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            itineraryIndex++;
+                        }
+                    }
+                    else
+                    {
+                        <div class="itinerary-item">
+
+                            <div class="itinerary-head">
+                                <strong>Gün 1</strong>
+                            </div>
+
+                            <div class="itinerary-body">
+
+                                <input type="hidden"
+                                       name="Itineraries[0].Day"
+                                       value="1" />
+
+                                <div class="row-grid">
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Gün Başlığı
+                                        </label>
+
+                                        <input type="text"
+                                               name="Itineraries[0].DayTitle"
+                                               class="form-control" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Konaklama
+                                        </label>
+
+                                        <input type="text"
+                                               name="Itineraries[0].Accomodation"
+                                               class="form-control" />
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Program Açıklaması
+                                    </label>
+
+                                    <textarea name="Itineraries[0].ProgramDescription"
+                                          class="form-control"></textarea>
+                                </div>
+
+                                <div class="row-grid">
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Ulaşım
+                                        </label>
+
+                                        <input type="text"
+                                               name="Itineraries[0].TransportType"
+                                               class="form-control" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Öğün
+                                        </label>
+
+                                        <input type="text"
+                                               name="Itineraries[0].Meal"
+                                               class="form-control" />
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+
+                <button type="button"
+                        class="btn-add"
+                        onclick="addItinerary()">
+                    + Yeni Gün Ekle
+                </button>
+
+            </div>
+        </div>
+
+
+        <!-- HİZMETLER -->
+        <div class="tour-card">
+
+            <div class="card-head">
+                <h3>Hizmetler & Öne Çıkanlar</h3>
+                <p>Tur ücretine dahil olan ve olmayan hizmetleri düzenleyin.</p>
+            </div>
+
+            <div class="card-body">
+
+                <div class="list-section">
+
+                    <div class="list-title">
+                        <h4>Fiyata Dahil Olanlar</h4>
+
+                        <button type="button"
+                                class="btn-add"
+                                onclick="addItem('includesList','PriceIncludes')">
+                            + Ekle
+                        </button>
+                    </div>
+
+                    <div id="includesList">
+
+                        @{
+                            var includeIndex = 0;
+                        }
+
+                        @if (Model.PriceIncludes != null && Model.PriceIncludes.Any())
+                        {
+                            foreach (var item in Model.PriceIncludes)
+                            {
+                                <div class="item-row">
+
+                                    <input type="text"
+                                           name="PriceIncludes[@includeIndex]"
+                                           value="@item"
+                                           class="form-control" />
+
+                                    <button type="button"
+                                            class="btn-remove"
+                                            onclick="removeItem(this)">
+                                        Sil
+                                    </button>
+
+                                </div>
+
+                                includeIndex++;
+                            }
+                        }
+                        else
+                        {
+                            <div class="item-row">
+
+                                <input type="text"
+                                       name="PriceIncludes[0]"
+                                       class="form-control" />
+
+                                <button type="button"
+                                        class="btn-remove"
+                                        onclick="removeItem(this)">
+                                    Sil
+                                </button>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="list-section">
+
+                    <div class="list-title">
+
+                        <h4>Fiyata Dahil Olmayanlar</h4>
+
+                        <button type="button"
+                                class="btn-add"
+                                onclick="addItem('notIncludesList','NotPriceIncludes')">
+                            + Ekle
+                        </button>
+
+                    </div>
+
+
+                    <div id="notIncludesList">
+
+                        @{
+                            var notIncludeIndex = 0;
+                        }
+
+                        @if (Model.NotPriceIncludes != null && Model.NotPriceIncludes.Any())
+                        {
+                            foreach (var item in Model.NotPriceIncludes)
+                            {
+                                <div class="item-row">
+
+                                    <input type="text"
+                                           name="NotPriceIncludes[@notIncludeIndex]"
+                                           value="@item"
+                                           class="form-control" />
+
+                                    <button type="button"
+                                            class="btn-remove"
+                                            onclick="removeItem(this)">
+                                        Sil
+                                    </button>
+
+                                </div>
+
+                                notIncludeIndex++;
+                            }
+                        }
+                        else
+                        {
+                            <div class="item-row">
+
+                                <input type="text"
+                                       name="NotPriceIncludes[0]"
+                                       class="form-control" />
+
+                                <button type="button"
+                                        class="btn-remove"
+                                        onclick="removeItem(this)">
+                                    Sil
+                                </button>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="list-section">
+
+                    <div class="list-title">
+
+                        <h4>Öne Çıkan Özellikler</h4>
+
+                        <button type="button"
+                                class="btn-add"
+                                onclick="addItem('featuresList','Features')">
+                            + Ekle
+                        </button>
+
+                    </div>
+
+
+                    <div id="featuresList">
+
+                        @{
+                            var featureIndex = 0;
+                        }
+
+                        @if (Model.Features != null && Model.Features.Any())
+                        {
+                            foreach (var item in Model.Features)
+                            {
+                                <div class="item-row">
+
+                                    <input type="text"
+                                           name="Features[@featureIndex]"
+                                           value="@item"
+                                           class="form-control" />
+
+                                    <button type="button"
+                                            class="btn-remove"
+                                            onclick="removeItem(this)">
+                                        Sil
+                                    </button>
+
+                                </div>
+
+                                featureIndex++;
+                            }
+                        }
+                        else
+                        {
+                            <div class="item-row">
+
+                                <input type="text"
+                                       name="Features[0]"
+                                       class="form-control" />
+
+                                <button type="button"
+                                        class="btn-remove"
+                                        onclick="removeItem(this)">
+                                    Sil
+                                </button>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- GÖRSELLER -->
+        <div class="tour-card">
+
+            <div class="card-head">
+                <h3>Görseller & Yayın Ayarları</h3>
+                <p>Mevcut görselleri görüntüleyebilir ve yeni görseller seçebilirsiniz.</p>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row-grid">
+
+                    <div class="upload-box">
+
+                        <label class="form-label">
+                            Mevcut Kapak Görseli
+                        </label>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                        {
+                            <div class="existing-image">
+                                <img src="@Model.ImageUrl"
+                                     alt="@Model.Name" />
+                            </div>
+                        }
+
+                        <label class="form-label">
+                            Yeni Kapak Görseli
+                        </label>
+
+                        <input type="file"
+                               name="CoverImage"
+                               id="coverInput"
+                               accept="image/*"
+                               class="form-control" />
+
+                        <small>
+                            Yeni görsel seçmezseniz mevcut görsel korunur.
+                        </small>
+
+                    </div>
+
+
+                    <div class="upload-box">
+
+                        <label class="form-label">
+                            Mevcut Galeri Görselleri
+                        </label>
+
+                        @if (Model.GalleryImages != null && Model.GalleryImages.Any())
+                        {
+                            <div class="gallery-preview">
+
+                                @foreach (var image in Model.GalleryImages)
+                                {
+                                    <img src="@image"
+                                         alt="@Model.Name" />
+                                }
+
+                            </div>
+                        }
+
+                        <label class="form-label">
+                            Yeni Galeri Görselleri
+                        </label>
+
+                        <input type="file"
+                               name="GalleryFiles"
+                               id="galleryInput"
+                               accept="image/*"
+                               multiple
+                               class="form-control" />
+
+                        <small>
+                            Yeni görsel seçmezseniz mevcut galeri korunur.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group" style="margin-top:25px;">
+
+                    <label class="form-label">
+                        Yayın Durumu
+                    </label>
+
+                    <div class="status-options">
+
+                        <label class="status-option">
+                            <input type="radio"
+                                   asp-for="State"
+                                   value="Active" />
+                            Aktif
+                        </label>
+
+
+                        <label class="status-option">
+                            <input type="radio"
+                                   asp-for="State"
+                                   value="Passive" />
+                            Pasif
+                        </label>
+
+
+                        <label class="status-option">
+                            <input type="radio"
+                                   asp-for="State"
+                                   value="Draft" />
+                            Taslak
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="bottom-actions">
+
+            <a asp-area="Admin"
+               asp-controller="Tour"
+               asp-action="Index"
+               class="btn-cancel">
+                Vazgeç
+            </a>
+
+            <button type="submit"
+                    class="btn-save">
+                Değişiklikleri Kaydet
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+
+    let dateIndex = @((Model.TourDates?.Count ?? 0));
+    let itineraryIndex = @((Model.Itineraries?.Count ?? 0));
+
+    let includeIndex = @((Model.PriceIncludes?.Count ?? 0));
+    let notIncludeIndex = @((Model.NotPriceIncludes?.Count ?? 0));
+    let featureIndex = @((Model.Features?.Count ?? 0));
+
+
+    function addDate() {
+
+        const html = `
+            <div class="date-row">
+
+                <div class="date-row-grid">
+
+                    <div class="form-group">
+                        <label class="form-label">Başlangıç</label>
+
+                        <input type="date"
+                               name="TourDates[${dateIndex}].StartDate"
+                               class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Bitiş</label>
+
+                        <input type="date"
+                               name="TourDates[${dateIndex}].EndDate"
+                               class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Kontenjan</label>
+
+                        <input type="number"
+                               name="TourDates[${dateIndex}].Quota"
+                               class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="form-label">Aktif</label>
+
+                        <input type="hidden"
+                               name="TourDates[${dateIndex}].IsActive"
+                               value="false" />
+
+                        <input type="checkbox"
+                               name="TourDates[${dateIndex}].IsActive"
+                               value="true" />
+
+                    </div>
+
+                    <button type="button"
+                            class="btn-remove"
+                            onclick="removeDate(this)">
+                        Sil
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        document
+            .getElementById("dateList")
+            .insertAdjacentHTML("beforeend", html);
+
+        dateIndex++;
+    }
+
+
+    function removeDate(button) {
+
+        const rows = document.querySelectorAll("#dateList .date-row");
+
+        if (rows.length <= 1) {
+            return;
+        }
+
+        button.closest(".date-row").remove();
+
+        refreshDateIndexes();
+    }
+
+
+    function refreshDateIndexes() {
+
+        const rows = document.querySelectorAll("#dateList .date-row");
+
+        rows.forEach((row, index) => {
+
+            const start = row.querySelector('[name*=".StartDate"]');
+            const end = row.querySelector('[name*=".EndDate"]');
+            const quota = row.querySelector('[name*=".Quota"]');
+            const hidden = row.querySelector('[name*=".IsActive"][type="hidden"]');
+            const checkbox = row.querySelector('[name*=".IsActive"][type="checkbox"]');
+
+            if (start)
+                start.name = `TourDates[${index}].StartDate`;
+
+            if (end)
+                end.name = `TourDates[${index}].EndDate`;
+
+            if (quota)
+                quota.name = `TourDates[${index}].Quota`;
+
+            if (hidden)
+                hidden.name = `TourDates[${index}].IsActive`;
+
+            if (checkbox)
+                checkbox.name = `TourDates[${index}].IsActive`;
+        });
+
+        dateIndex = rows.length;
+    }
+
+
+    function addItinerary() {
+
+        const dayNumber = itineraryIndex + 1;
+
+        const html = `
+            <div class="itinerary-item">
+
+                <div class="itinerary-head"
+                     onclick="toggleItinerary(this)">
+
+                    <strong>
+                        Gün ${dayNumber}
+                    </strong>
+
+                    <span>⌄</span>
+
+                </div>
+
+                <div class="itinerary-body">
+
+                    <input type="hidden"
+                           name="Itineraries[${itineraryIndex}].Day"
+                           value="${dayNumber}" />
+
+                    <div class="row-grid">
+
+                        <div class="form-group">
+
+                            <label class="form-label">
+                                Gün Başlığı
+                            </label>
+
+                            <input type="text"
+                                   name="Itineraries[${itineraryIndex}].DayTitle"
+                                   class="form-control" />
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label class="form-label">
+                                Konaklama
+                            </label>
+
+                            <input type="text"
+                                   name="Itineraries[${itineraryIndex}].Accomodation"
+                                   class="form-control" />
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Program Açıklaması
+                        </label>
+
+                        <textarea name="Itineraries[${itineraryIndex}].ProgramDescription"
+                                  class="form-control"></textarea>
+
+                    </div>
+
+
+                    <div class="row-grid">
+
+                        <div class="form-group">
+
+                            <label class="form-label">
+                                Ulaşım
+                            </label>
+
+                            <input type="text"
+                                   name="Itineraries[${itineraryIndex}].TransportType"
+                                   class="form-control" />
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label class="form-label">
+                                Öğün
+                            </label>
+
+                            <input type="text"
+                                   name="Itineraries[${itineraryIndex}].Meal"
+                                   class="form-control" />
+
+                        </div>
+
+                    </div>
+
+
+                    <button type="button"
+                            class="btn-remove"
+                            onclick="removeItinerary(this)">
+                        Günü Sil
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        document
+            .getElementById("itineraryList")
+            .insertAdjacentHTML("beforeend", html);
+
+        itineraryIndex++;
+    }
+
+
+    function removeItinerary(button) {
+
+        const rows =
+            document.querySelectorAll("#itineraryList .itinerary-item");
+
+        if (rows.length <= 1) {
+            return;
+        }
+
+        button.closest(".itinerary-item").remove();
+
+        refreshItineraryIndexes();
+    }
+
+
+    function refreshItineraryIndexes() {
+
+        const rows =
+            document.querySelectorAll("#itineraryList .itinerary-item");
+
+        rows.forEach((row, index) => {
+
+            const day =
+                row.querySelector('[name*=".Day"]');
+
+            const title =
+                row.querySelector('[name*=".DayTitle"]');
+
+            const description =
+                row.querySelector('[name*=".ProgramDescription"]');
+
+            const accommodation =
+                row.querySelector('[name*=".Accomodation"]');
+
+            const transport =
+                row.querySelector('[name*=".TransportType"]');
+
+            const meal =
+                row.querySelector('[name*=".Meal"]');
+
+
+            if (day) {
+                day.name = `Itineraries[${index}].Day`;
+                day.value = index + 1;
+            }
+
+            if (title)
+                title.name = `Itineraries[${index}].DayTitle`;
+
+            if (description)
+                description.name =
+                    `Itineraries[${index}].ProgramDescription`;
+
+            if (accommodation)
+                accommodation.name =
+                    `Itineraries[${index}].Accomodation`;
+
+            if (transport)
+                transport.name =
+                    `Itineraries[${index}].TransportType`;
+
+            if (meal)
+                meal.name =
+                    `Itineraries[${index}].Meal`;
+
+
+            const header =
+                row.querySelector(".itinerary-head strong");
+
+            if (header) {
+
+                const titleValue =
+                    title?.value || "";
+
+                header.textContent =
+                    `Gün ${index + 1}${titleValue ? " - " + titleValue : ""}`;
+            }
+
+        });
+
+        itineraryIndex = rows.length;
+    }
+
+
+    function toggleItinerary(header) {
+
+        const body =
+            header.nextElementSibling;
+
+        if (!body)
+            return;
+
+        if (body.style.display === "none") {
+
+            body.style.display = "block";
+
+        } else {
+
+            body.style.display = "none";
+
+        }
+    }
+
+
+    function addItem(listId, propertyName) {
+
+        const list =
+            document.getElementById(listId);
+
+        let index;
+
+        if (propertyName === "PriceIncludes") {
+            index = includeIndex;
+            includeIndex++;
+        }
+        else if (propertyName === "NotPriceIncludes") {
+            index = notIncludeIndex;
+            notIncludeIndex++;
+        }
+        else {
+            index = featureIndex;
+            featureIndex++;
+        }
+
+
+        const html = `
+            <div class="item-row">
+
+                <input type="text"
+                       name="${propertyName}[${index}]"
+                       class="form-control" />
+
+                <button type="button"
+                        class="btn-remove"
+                        onclick="removeItem(this)">
+                    Sil
+                </button>
+
+            </div>
+        `;
+
+        list.insertAdjacentHTML("beforeend", html);
+    }
+
+
+    function removeItem(button) {
+
+        button.closest(".item-row").remove();
+
+        refreshSimpleListIndexes();
+    }
+
+
+    function refreshSimpleListIndexes() {
+
+        refreshList(
+            "includesList",
+            "PriceIncludes"
+        );
+
+        refreshList(
+            "notIncludesList",
+            "NotPriceIncludes"
+        );
+
+        refreshList(
+            "featuresList",
+            "Features"
+        );
+    }
+
+
+    function refreshList(listId, propertyName) {
+
+        const list =
+            document.getElementById(listId);
+
+        if (!list)
+            return;
+
+        const inputs =
+            list.querySelectorAll("input");
+
+        inputs.forEach((input, index) => {
+
+            input.name =
+                `${propertyName}[${index}]`;
+
+        });
+
+
+        if (propertyName === "PriceIncludes")
+            includeIndex = inputs.length;
+
+        else if (propertyName === "NotPriceIncludes")
+            notIncludeIndex = inputs.length;
+
+        else
+            featureIndex = inputs.length;
+    }
+
+
+    function submitTour() {
+
+        refreshDateIndexes();
+
+        refreshItineraryIndexes();
+
+        refreshSimpleListIndexes();
+
+        document
+            .getElementById("tourForm")
+            .submit();
+    }
+
+</script>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

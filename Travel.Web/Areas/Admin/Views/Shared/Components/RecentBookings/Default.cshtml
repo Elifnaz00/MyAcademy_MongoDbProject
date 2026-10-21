@@ -1,0 +1,73 @@
+﻿@using Travel.Web.DTOs.ReservationDtos
+@model List<RecentBookingsDto>
+
+<div class="card-x mb-3">
+
+    <div class="card-head">
+
+        <h3>Son Rezervasyonlar</h3>
+
+        <button class="btn-soft">
+            Tümünü Gör
+        </button>
+
+    </div>
+
+    <div class="card-body pt-2">
+
+        <div class="tbl-wrap">
+
+            <table class="tx">
+
+                <thead>
+                    <tr>
+                        <th>Rezervasyon No</th>
+                        <th>Misafir</th>
+                        <th>Tur</th>
+                        <th>Tur Tarihi</th>
+                        <th>Kişi</th>
+                        <th>Tutar</th>
+                        <th>Durum</th>
+                    </tr>
+                </thead>
+
+                <tbody id="bookingRows">
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="res-no">1</span>
+                            </td>
+
+                            <td>
+                                <div class="guest">
+                                    <span class="av">ED</span>
+                                    @item.UserName
+                                </div>
+                            </td>
+
+                            <td>@item.TourName</td>
+                            <td>@item.StartDate</td>
+                            <td>@item.TotalParticipants</td>
+
+                            <td>
+                                <span class="amount">@item.TotalPrice</span>
+                            </td>
+
+                            <td>
+                                <span class="badge-x ${stBadge[b.status][0]}">
+                                   @item.ReservationStatus
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                   
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

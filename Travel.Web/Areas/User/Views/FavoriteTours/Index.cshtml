@@ -1,0 +1,401 @@
+﻿@using Travel.Web.DTOs.FavoriteDto
+@model IList<ResultFavoriteDto>
+@{
+    ViewData["Title"] = "Favorilerim";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<style>
+    .my-comments {
+        min-height: 70vh;
+        padding: 45px 0 70px;
+        background: #f7f5f0;
+        color: #0e2a3b;
+    }
+
+    .comments-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .comments-header {
+        margin-bottom: 32px;
+    }
+
+        .comments-header .eyebrow {
+            color: #0fa3a3;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .comments-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0e2a3b;
+        }
+
+        .comments-header p {
+            color: #71808a;
+            font-size: 15px;
+            margin: 0;
+        }
+
+    .comments-summary {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #fff;
+        padding: 20px 24px;
+        border-radius: 14px;
+        margin-bottom: 24px;
+        border: 1px solid #e8e8e2;
+    }
+
+    .summary-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e5f6f4;
+        color: #0fa3a3;
+        border-radius: 12px;
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+    .summary-number {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0e2a3b;
+        line-height: 1.3;
+    }
+
+    .summary-label {
+        font-size: 13px;
+        color: #71808a;
+    }
+
+    .comment-card {
+        background: #fff;
+        border: 1px solid #e8e8e2;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 18px;
+        transition: box-shadow .2s ease, transform .2s ease;
+    }
+
+        .comment-card:hover {
+            box-shadow: 0 8px 24px rgba(14, 42, 59, .06);
+            transform: translateY(-2px);
+        }
+
+    .comment-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .tour-info {
+        min-width: 0;
+    }
+
+    .tour-label {
+        display: block;
+        color: #0fa3a3;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        margin-bottom: 7px;
+    }
+
+    .tour-name {
+        font-size: 19px;
+        font-weight: 700;
+        color: #0e2a3b;
+        margin: 0;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+    .comment-date {
+        font-size: 13px;
+        color: #7d8b93;
+        white-space: nowrap;
+        padding-top: 4px;
+    }
+
+    .comment-rating {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin-bottom: 14px;
+    }
+
+        .comment-rating .star {
+            color: #f0b429;
+            font-size: 18px;
+        }
+
+        .comment-rating .rating-value {
+            color: #526570;
+            font-size: 13px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+    .comment-content {
+        background: #f8faf9;
+        border-radius: 10px;
+        padding: 18px;
+        color: #425560;
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+    }
+
+    .comment-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid #edf0ed;
+    }
+
+    .author-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .author-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #e5f6f4;
+        flex-shrink: 0;
+    }
+
+    .author-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #0e2a3b;
+    }
+
+    .comment-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #168477;
+        background: #e5f6f0;
+        border-radius: 20px;
+        padding: 7px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .empty-comments {
+        text-align: center;
+        padding: 60px 24px;
+        background: #fff;
+        border: 1px solid #e8e8e2;
+        border-radius: 16px;
+    }
+
+    .empty-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e5f6f4;
+        color: #0fa3a3;
+        font-size: 30px;
+    }
+
+    .empty-comments h3 {
+        font-size: 21px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #0e2a3b;
+    }
+
+    .empty-comments p {
+        font-size: 14px;
+        color: #71808a;
+        margin: 0 auto 22px;
+        max-width: 420px;
+        line-height: 1.7;
+    }
+
+    .explore-btn {
+        display: inline-block;
+        background: #0e2a3b;
+        color: #fff;
+        padding: 12px 22px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background .2s ease;
+    }
+
+        .explore-btn:hover {
+            background: #0fa3a3;
+            color: #fff;
+        }
+
+    @@media (max-width: 600px) {
+        .my-comments {
+            padding: 30px 0 45px;
+        }
+
+        .comments-container {
+            padding: 0 16px;
+        }
+
+        .comments-header h1 {
+            font-size: 26px;
+        }
+
+        .comment-card {
+            padding: 18px;
+        }
+
+        .comment-top {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .comment-date {
+            white-space: normal;
+        }
+
+        .comment-footer {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+</style>
+
+<section class="my-comments">
+    <div class="comments-container">
+
+        <div class="comments-header">
+            <span class="eyebrow">TRAVELIO · SEYAHAT GÜNLÜĞÜN</span>
+            <h1>Favori Turlarım</h1>
+            <p>Beğendiğin turları burada görüntüleyebilirsin.</p>
+        </div>
+
+        <div class="comments-summary">
+            <div class="summary-icon">
+                <i class="fa-regular fa-comments"></i>
+            </div>
+            <div>
+                <div class="summary-number">@Model.Count</div>
+                <div class="summary-label">Beğendiğim Turlar</div>
+            </div>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var favorite in Model)
+            {
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                @if (!string.IsNullOrWhiteSpace(favorite.ImageUrl))
+                                {
+                                    <img src="@favorite.ImageUrl"
+                                         alt="@favorite.TourName"
+                                         class="w-100 h-100"
+                                         style="min-height:220px; object-fit:cover;" />
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-center justify-content-center bg-light h-100"
+                                         style="min-height:220px;">
+                                        <i class="bi bi-image fs-1 text-secondary"></i>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="card-body p-4">
+                                    <span class="text-muted small">
+                                       
+                                    </span>
+
+                                    <h5 class="mt-2 mb-3">
+                                        @favorite.TourName
+                                    </h5>
+
+                                  
+
+                                    <p class="mb-2">
+                                        <i class="bi bi-clock-history me-2"></i>
+                                       
+                                        @favorite.ShortImportantDescription
+                                    </p>
+
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4">
+                                        <strong class="fs-5">
+                                            @favorite.Price.ToString("N2") ₺
+                                        </strong>
+
+                                        <span class="badge bg-light text-dark border">
+                                            
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        }
+        else
+        {
+            <div class="empty-comments">
+                <div class="empty-icon">
+                    <i class="fa-regular fa-comment-dots"></i>
+                </div>
+
+                <h3>Favori tur bulunmamakta.</h3>
+
+                <p>
+                    Favorilediğin turları buradan inceleyebilirsin.
+                </p>
+
+                <a asp-controller="Tour"
+                   asp-action="Index"
+                   class="explore-btn">
+                    Turları Keşfet
+                    <i class="fa-solid fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        }
+
+    </div>
+</section>
+

@@ -1,0 +1,60 @@
+﻿@using Travel.Web.DTOs.ReservationDtos
+@model List<ToursWithReservationDto>
+@using System.Text.Json
+
+<div class="row g-3 mb-3">
+
+    <div class="col-lg-8">
+
+        <div class="card-x h-100">
+
+            <div class="card-head">
+
+                <h3>Rezervasyon İstatistikleri</h3>
+
+                <select class="chart-select" id="rangeSelect">
+                    <option>Son 7 Gün</option>
+                    <option>Son 30 Gün</option>
+                    <option selected>Son 6 Ay</option>
+                </select>
+
+            </div>
+
+            <div class="card-body">
+                <div class="chart-wrap">
+                    <canvas id="resChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="card-x h-100">
+
+            <div class="card-head">
+                <h3>En Popüler Turlar</h3>
+            </div>
+            <div id="popularTours">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="pt-item">
+                        <span class="rank">@(i + 1)</span>
+
+                        <div class="nm">
+                            <b>@Model[i].TourName</b>
+                            <span>@Model[i].ReservationCount rezervasyon</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script id="reservationChartData" type="application/json">
+    @Html.Raw(JsonSerializer.Serialize(ViewBag.ReservationChartData))
+</script>

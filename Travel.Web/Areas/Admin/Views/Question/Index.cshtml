@@ -1,0 +1,363 @@
+﻿
+@using Travel.Web.DTOs.QıuestionDto
+@model List<ResultQuestionDto>
+
+@{
+    ViewData["Title"] = "Cevaplanmamış Sorular";
+    ViewData["PageTitle"] = "Sorular";
+    ViewData["ActiveMenu"] = "Questions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .questions-page {
+        color: #0e2a3b;
+    }
+
+    .questions-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+    }
+
+        .questions-heading h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .questions-heading p {
+            color: #6a7c88;
+            margin: 0;
+            font-size: .92rem;
+        }
+
+    .question-stat {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: #fff;
+        border: 1px solid #e7e2d8;
+        border-radius: 16px;
+        padding: 18px 22px;
+        box-shadow: 0 4px 18px rgba(14,42,59,.04);
+        margin-bottom: 24px;
+    }
+
+    .question-stat-icon {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        background: #fbf1dc;
+        color: #a9741a;
+        border-radius: 13px;
+        font-size: 1.4rem;
+    }
+
+    .question-stat small {
+        display: block;
+        color: #6a7c88;
+        font-size: .82rem;
+        margin-bottom: 4px;
+    }
+
+    .question-stat strong {
+        font-family: 'Sora', sans-serif;
+        font-size: 1.55rem;
+        font-weight: 700;
+    }
+
+    .question-panel {
+        background: #fff;
+        border: 1px solid #e7e2d8;
+        border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(14,42,59,.04);
+        overflow: hidden;
+    }
+
+    .question-panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 22px 24px;
+        border-bottom: 1px solid #eef0ef;
+        flex-wrap: wrap;
+    }
+
+        .question-panel-head h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 5px;
+        }
+
+        .question-panel-head p {
+            color: #6a7c88;
+            font-size: .83rem;
+            margin: 0;
+        }
+
+    .question-count {
+        background: #fbf1dc;
+        color: #a9741a;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .question-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+        .question-table thead th {
+            background: #fafaf8;
+            color: #6a7c88;
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            font-weight: 700;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eef0ef;
+            white-space: nowrap;
+        }
+
+        .question-table tbody td {
+            padding: 20px;
+            border-bottom: 1px solid #eef0ef;
+            vertical-align: middle;
+            font-size: .88rem;
+        }
+
+        .question-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .question-table tbody tr:hover {
+            background: #fcfdfc;
+        }
+
+    .question-user {
+        font-weight: 700;
+        color: #0e2a3b;
+        margin-bottom: 5px;
+    }
+
+    .question-meta {
+        font-size: .76rem;
+        color: #6a7c88;
+    }
+
+    .question-text {
+        min-width: 220px;
+        max-width: 400px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+        color: #314957;
+    }
+
+    .question-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: #fbf1dc;
+        color: #a9741a;
+        font-size: .74rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .question-status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #c18a27;
+    }
+
+    .btn-answer {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 10px 14px;
+        background: #0fa3a3;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: .82rem;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: .2s;
+    }
+
+        .btn-answer:hover {
+            background: #0b7f80;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .question-empty {
+        text-align: center;
+        padding: 65px 20px;
+    }
+
+    .question-empty-icon {
+        width: 66px;
+        height: 66px;
+        margin: 0 auto 18px;
+        border-radius: 20px;
+        display: grid;
+        place-items: center;
+        background: #e3f4f0;
+        color: #0b7f80;
+        font-size: 1.8rem;
+    }
+
+    .question-empty h4 {
+        font-family: 'Sora', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .question-empty p {
+        color: #6a7c88;
+        font-size: .88rem;
+        margin: 0;
+    }
+
+    @@media (max-width: 768px) {
+        .questions-heading h2 {
+            font-size: 1.2rem;
+        }
+
+        .question-panel-head {
+            padding: 18px;
+        }
+
+        .question-table thead th,
+        .question-table tbody td {
+            padding: 14px;
+        }
+
+        .question-stat {
+            padding: 15px;
+        }
+    }
+</style>
+
+<div class="content questions-page">
+
+    <div class="questions-heading">
+        <div>
+            <h2>Cevaplanmamış Sorular</h2>
+            <p>Tur sayfalarından gönderilen ve yanıt bekleyen soruları yönetin.</p>
+        </div>
+    </div>
+
+    <div class="question-stat">
+        <div class="question-stat-icon">?</div>
+        <div>
+            <small>Yanıt bekleyen soru sayısı</small>
+            <strong>@Model.Count</strong>
+        </div>
+    </div>
+
+    <section class="question-panel">
+
+        <div class="question-panel-head">
+            <div>
+                <h3>Bekleyen Sorular</h3>
+                <p>Kullanıcıların yanıt beklediği sorular burada listelenir.</p>
+            </div>
+
+            <span class="question-count">
+                @Model.Count soru
+            </span>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="question-table">
+                    <thead>
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>Soru</th>
+                            <th>İlgili Tur</th>
+                            <th>Tarih</th>
+                            <th>Durum</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                            @foreach (var question in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="question-user">
+                                        @question.UserName
+                                    </div>
+                                    <div class="question-meta">
+                                        Kullanıcı sorusu
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="question-text">
+                                        @question.QuestionContent
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="question-text">
+                                        @question.TourName
+                                    </div>
+                                </td>
+                                <td>
+                                    @question.CreatedAt.ToString("dd.MM.yyyy")
+                                </td>
+
+                                <td>
+                                    <span class="question-status">
+                                        <span class="question-status-dot"></span>
+                                        Yanıt bekliyor
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a class="btn-answer"
+                                       href="@Url.Action("Reply", "Question",
+                                                                                  new { area = "Admin", id = question.Id })">
+                                <span>↗</span>
+                                Cevapla
+                            </a>
+                        </td>
+                    </tr>
+                                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="question-empty">
+                <div class="question-empty-icon">✓</div>
+                <h4>Bekleyen soru bulunmuyor</h4>
+                <p>Tüm sorular yanıtlanmış veya henüz yeni bir soru gönderilmemiş.</p>
+            </div>
+        }
+
+    </section>
+</div>

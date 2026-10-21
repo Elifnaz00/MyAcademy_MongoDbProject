@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="AboutUs" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+	<data name="AllRightsReserved" xml:space="preserve">
+    <value>All rights reserved.</value>
+  </data>
+	<data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+	<data name="Campaigns" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+	<data name="Careers" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+	<data name="Contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+	<data name="Cookies" xml:space="preserve">
+    <value>Cookies</value>
+  </data>
+	<data name="Corporate" xml:space="preserve">
+    <value>Company</value>
+  </data>
+	<data name="Destinations" xml:space="preserve">
+    <value>Destinations</value>
+  </data>
+	<data name="EmailAddress" xml:space="preserve">
+    <value>Your email address</value>
+  </data>
+	<data name="Explore" xml:space="preserve">
+    <value>Explore</value>
+  </data>
+	<data name="FooterDescription" xml:space="preserve">
+    <value>Unforgettable journeys around the world, with carefully designed tours.</value>
+  </data>
+	<data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+	<data name="Join" xml:space="preserve">
+    <value>Subscribe</value>
+  </data>
+	<data name="JoinNewsletter" xml:space="preserve">
+    <value>Be the first to hear about new destinations and early booking offers.</value>
+  </data>
+	<data name="MyProfile" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+	<data name="Privacy" xml:space="preserve">
+    <value>Privacy</value>
+  </data>
+	<data name="Reviews" xml:space="preserve">
+    <value>Reviews</value>
+  </data>
+	<data name="Terms" xml:space="preserve">
+    <value>Terms of Use</value>
+  </data>
+	<data name="Tours" xml:space="preserve">
+    <value>Tours</value>
+  </data>
+	
+	<data name="MyAccount" xml:space="preserve">
+  <value>My Account</value>
+</data>
+	<data name="MyReservations" xml:space="preserve">
+  <value>My Reservations</value>
+</data>
+	<data name="MyFavoriteTours" xml:space="preserve">
+  <value>My Favorite Tours</value>
+</data>
+	<data name="MyComments" xml:space="preserve">
+  <value>My Comments</value>
+</data>
+	<data name="MyQuestions" xml:space="preserve">
+  <value>My Questions</value>
+</data>
+
+</root>

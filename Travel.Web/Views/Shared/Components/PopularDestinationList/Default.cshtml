@@ -1,0 +1,105 @@
+﻿@using Travel.Web.DTOs.DestinationDtos
+@model List<ResultDestinationDto>
+
+<section id="destinasyonlar" class="dest-section">
+
+    <div class="container">
+
+        <div class="section-head mb-5">
+
+            <div class="eyebrow">İlham veren şehirler</div>
+
+            <h2>Popüler Destinasyonlar</h2>
+
+            <p>
+                Milyonlarca gezginin tekrar tekrar dönmek istediği
+                rüya şehirler.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+            
+                
+                <div class="col-lg-6">
+
+                    <a class="dest-card tall" href="#">
+
+                        <img src="@Model[0].ImageUrl"
+                             alt="Paris" />
+
+                        <div class="dest-cap">
+                            <h3>@Model[0].Country</h3>
+                            <span>@Model[0].ShortDescription</span>
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+                <div class="col-lg-6">
+
+                    <div class="row g-4">
+
+                        <div class="col-12">
+
+                            <a class="dest-card" href="#">
+
+                            <img src="@Model[1].ImageUrl"
+                                     alt="Roma" />
+
+                                <div class="dest-cap">
+                                <h3>@Model[1].Country</h3>
+                                <span>@Model[1].ShortDescription</span>
+                                </div>
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <a class="dest-card" href="#">
+
+                            <img src="@Model[2].ImageUrl"
+                                     alt="Amsterdam" />
+
+                                <div class="dest-cap">
+                                    <h3>@Model[2].Country</h3>
+                                    <span>@Model[2].ShortDescription</span>
+                                </div>
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <a class="dest-card" href="#">
+
+                            <img src="@Model[3].ImageUrl"
+                                     alt="Tokyo" />
+
+                                <div class="dest-cap">
+                                    <h3>@Model[3].Country</h3>
+                                    <span>@Model[3].ShortDescription</span>
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            
+
+
+        </div>
+
+    </div>
+
+</section>

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="HeroEyebrow" xml:space="preserve"><value>Discover with Travelio</value></data>
+	<data name="HeroTitle" xml:space="preserve"><value>Are You Ready to Explore the World?</value></data>
+	<data name="HeroDescription" xml:space="preserve"><value>Unforgettable experiences await you, from Europe's iconic cities to the unique destinations of the Far East.</value></data>
+
+	<data name="Destination" xml:space="preserve"><value>Destination</value></data>
+	<data name="WhereToGo" xml:space="preserve"><value>Where would you like to go?</value></data>
+	<data name="Date" xml:space="preserve"><value>Date</value></data>
+	<data name="NumberOfPeople" xml:space="preserve"><value>Number of Travelers</value></data>
+	<data name="OnePerson" xml:space="preserve"><value>1 person</value></data>
+	<data name="TwoPeople" xml:space="preserve"><value>2 people</value></data>
+	<data name="ThreePeople" xml:space="preserve"><value>3 people</value></data>
+	<data name="FourPeople" xml:space="preserve"><value>4 people</value></data>
+	<data name="FiveOrMorePeople" xml:space="preserve"><value>5+ people</value></data>
+	<data name="SearchTours" xml:space="preserve"><value>Search Tours</value></data>
+
+	<data name="DestinationCount" xml:space="preserve"><value>Destinations</value></data>
+	<data name="GuidedTours" xml:space="preserve"><value>Guided Tours</value></data>
+	<data name="HappyTravelers" xml:space="preserve"><value>Happy Travelers</value></data>
+
+	<data name="PopularRoutes" xml:space="preserve"><value>Popular destinations</value></data>
+	<data name="MostPopularTours" xml:space="preserve"><value>Most Popular Tours</value></data>
+	<data name="PopularToursDescription" xml:space="preserve"><value>Carefully planned itineraries that travelers book most often.</value></data>
+	<data name="ViewAllTours" xml:space="preserve"><value>View All Tours</value></data>
+	<data name="AddToFavorites" xml:space="preserve"><value>Add to favorites</value></data>
+	<data name="PerPerson" xml:space="preserve"><value>Per person</value></data>
+	<data name="ViewTour" xml:space="preserve"><value>View Tour</value></data>
+
+	<data name="WhyUs" xml:space="preserve"><value>Why choose us</value></data>
+	<data name="WhyTravelio" xml:space="preserve"><value>Why Travelio?</value></data>
+	<data name="WhyTravelioDescription" xml:space="preserve"><value>More than a tour: a thoughtfully planned travel experience from start to finish.</value></data>
+
+	<data name="CarefullySelectedRoutes" xml:space="preserve"><value>Carefully Selected Routes</value></data>
+	<data name="CarefullySelectedRoutesDescription" xml:space="preserve"><value>Every tour features authentic experiences tested by our local experts, not just typical tourist stops.</value></data>
+
+	<data name="NoHiddenFees" xml:space="preserve"><value>No Hidden Fees</value></data>
+	<data name="NoHiddenFeesDescription" xml:space="preserve"><value>The price you see is the price you pay. Accommodation, transport, and guiding are transparently included in one package.</value></data>
+
+	<data name="Support247" xml:space="preserve"><value>We're Here 24/7</value></data>
+	<data name="Support247Description" xml:space="preserve"><value>Our support team is just a message away throughout your trip. We're ready to help if anything goes wrong.</value></data>
+
+	<data name="TravelerReviews" xml:space="preserve"><value>Traveler reviews</value></data>
+	<data name="WhatTravelersSay" xml:space="preserve"><value>What Are Travelers Saying?</value></data>
+
+	<data name="ReviewParisText" xml:space="preserve"><value>The five days we spent in Paris were one of the best holidays of our lives. Our guide was wonderful, and the itinerary was very well planned.</value></data>
+	<data name="ReviewParisRoute" xml:space="preserve"><value>Paris, France</value></data>
+	<data name="ReviewRomeText" xml:space="preserve"><value>Everything was perfect. The hotels, transport, and guiding exceeded our expectations. We would definitely choose Travelio again.</value></data>
+	<data name="ReviewRomeRoute" xml:space="preserve"><value>Rome, Italy</value></data>
+	<data name="ReviewSwissText" xml:space="preserve"><value>The Swiss scenery was incredible. Every detail had been considered, and we felt truly special throughout the trip.</value></data>
+	<data name="ReviewSwissRoute" xml:space="preserve"><value>Swiss Alps</value></data>
+
+	<data name="NextStopIsYou" xml:space="preserve"><value>Your next stop awaits</value></data>
+	<data name="NextAdventureTitle" xml:space="preserve"><value>Your Next Adventure Is Just a Click Away</value></data>
+	<data name="NextAdventureDescription" xml:space="preserve"><value>Choose your dream destination and leave the rest to Travelio. Don't miss early booking offers for tours with limited availability.</value></data>
+	<data name="DiscoverTours" xml:space="preserve"><value>Discover Tours</value></data>
+	<data name="ContactUs" xml:space="preserve"><value>Contact Us</value></data>
+	<data name="CityParis" xml:space="preserve"><value>Paris, Fransa</value></data>
+	<data name="CityRome" xml:space="preserve"><value>Roma, İtalya</value></data>
+	<data name="CityAmsterdam" xml:space="preserve"><value>Amsterdam, Hollanda</value></data>
+	<data name="CityTokyo" xml:space="preserve"><value>Tokyo, Japonya</value></data>
+	<data name="CityBarcelona" xml:space="preserve"><value>Barselona, İspanya</value></data>
+	<data name="CityPrague" xml:space="preserve"><value>Prag, Çekya</value></data>
+</root>

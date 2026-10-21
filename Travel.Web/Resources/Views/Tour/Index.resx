@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="PageTitle" xml:space="preserve"><value>Turlar</value></data>
+	<data name="Home" xml:space="preserve"><value>Ana Sayfa</value></data>
+	<data name="Tours" xml:space="preserve"><value>Turlar</value></data>
+	<data name="DiscoverTheWorld" xml:space="preserve"><value>Dünyayı Keşfedin</value></data>
+	<data name="HeroTitle" xml:space="preserve"><value>Hayalinizdeki Turu Bulun</value></data>
+	<data name="HeroDescription" xml:space="preserve"><value>Avrupa'nın ikonik şehirlerinden Uzak Doğu'nun büyüleyici destinasyonlarına kadar size en uygun seyahati keşfedin.</value></data>
+
+	<data name="FilterTours" xml:space="preserve"><value>Turları Filtrele</value></data>
+	<data name="FilterDescription" xml:space="preserve"><value>Size en uygun rotayı bulmak için seçeneklerinizi daraltın.</value></data>
+	<data name="SearchTours" xml:space="preserve"><value>Tur Ara</value></data>
+	<data name="SearchPlaceholder" xml:space="preserve"><value>Tur veya destinasyon ara</value></data>
+	<data name="Destination" xml:space="preserve"><value>Destinasyon</value></data>
+	<data name="TourDuration" xml:space="preserve"><value>Tur Süresi</value></data>
+	<data name="PriceRange" xml:space="preserve"><value>Fiyat Aralığı</value></data>
+	<data name="TourType" xml:space="preserve"><value>Tur Türü</value></data>
+	<data name="Rating" xml:space="preserve"><value>Puan</value></data>
+	<data name="ApplyFilters" xml:space="preserve"><value>Filtreleri Uygula</value></data>
+	<data name="ClearFilters" xml:space="preserve"><value>Filtreleri Temizle</value></data>
+	<data name="Filter" xml:space="preserve"><value>Filtrele</value></data>
+	<data name="Close" xml:space="preserve"><value>Kapat</value></data>
+	<data name="Previous" xml:space="preserve"><value>Önceki</value></data>
+	<data name="Next" xml:space="preserve"><value>Sonraki</value></data>
+
+	<data name="ToursFound" xml:space="preserve"><value>tur bulundu</value></data>
+	<data name="Sort" xml:space="preserve"><value>Sırala:</value></data>
+	<data name="Recommended" xml:space="preserve"><value>Önerilen</value></data>
+	<data name="HighestRated" xml:space="preserve"><value>En Yüksek Puanlı</value></data>
+	<data name="PriceLowToHigh" xml:space="preserve"><value>Fiyat: Artan</value></data>
+	<data name="PriceHighToLow" xml:space="preserve"><value>Fiyat: Azalan</value></data>
+	<data name="NewestTours" xml:space="preserve"><value>En Yeni Turlar</value></data>
+
+	<data name="Days1To3" xml:space="preserve"><value>1–3 Gün</value></data>
+	<data name="Days4To5" xml:space="preserve"><value>4–5 Gün</value></data>
+	<data name="Days6To7" xml:space="preserve"><value>6–7 Gün</value></data>
+	<data name="Days8Plus" xml:space="preserve"><value>8 Gün ve Üzeri</value></data>
+
+	<data name="Price1" xml:space="preserve"><value>₺0–25.000</value></data>
+	<data name="Price2" xml:space="preserve"><value>₺25.000–40.000</value></data>
+	<data name="Price3" xml:space="preserve"><value>₺40.000–60.000</value></data>
+	<data name="Price4" xml:space="preserve"><value>₺60.000 ve Üzeri</value></data>
+
+	<data name="CultureTours" xml:space="preserve"><value>Kültür Turları</value></data>
+	<data name="CityTours" xml:space="preserve"><value>Şehir Turları</value></data>
+	<data name="NatureAdventure" xml:space="preserve"><value>Doğa ve Macera</value></data>
+	<data name="RomanticRoutes" xml:space="preserve"><value>Romantik Rotalar</value></data>
+	<data name="Gastronomy" xml:space="preserve"><value>Gastronomi</value></data>
+	<data name="WinterNorthernLights" xml:space="preserve"><value>Kış ve Kuzey Işıkları</value></data>
+	<data name="FarEast" xml:space="preserve"><value>Uzak Doğu</value></data>
+
+	<data name="Rating45" xml:space="preserve"><value>4,5 ve üzeri</value></data>
+	<data name="Rating40" xml:space="preserve"><value>4,0 ve üzeri</value></data>
+	<data name="Rating35" xml:space="preserve"><value>3,5 ve üzeri</value></data>
+
+	<data name="AddToFavorites" xml:space="preserve"><value>Favorilere Ekle</value></data>
+	<data name="Days" xml:space="preserve"><value>Gün</value></data>
+	<data name="Nights" xml:space="preserve"><value>Gece</value></data>
+	<data name="PerPerson" xml:space="preserve"><value>Kişi başı</value></data>
+	<data name="TourDetails" xml:space="preserve"><value>Turu İncele</value></data>
+
+	<data name="EmptyTitle" xml:space="preserve"><value>Seçtiğiniz kriterlere uygun tur bulunamadı.</value></data>
+	<data name="EmptyDescription" xml:space="preserve"><value>Filtrelerinizi gevşetmeyi veya yeniden başlamak için tüm filtreleri temizlemeyi deneyin.</value></data>
+
+	<data name="HelpUs" xml:space="preserve"><value>Size yardımcı olalım</value></data>
+	<data name="MissingRouteTitle" xml:space="preserve"><value>Aradığınız Rotayı Bulamadınız mı?</value></data>
+	<data name="MissingRouteDescription" xml:space="preserve"><value>Hayalinizdeki destinasyonu bize anlatın, size uygun seyahat seçeneklerini bulmanıza yardımcı olalım.</value></data>
+	<data name="ContactUs" xml:space="preserve"><value>Bizimle İletişime Geçin</value></data>
+
+	<data name="France" xml:space="preserve"><value>Fransa</value></data>
+	<data name="Italy" xml:space="preserve"><value>İtalya</value></data>
+	<data name="Spain" xml:space="preserve"><value>İspanya</value></data>
+	<data name="Netherlands" xml:space="preserve"><value>Hollanda</value></data>
+	<data name="Austria" xml:space="preserve"><value>Avusturya</value></data>
+	<data name="Switzerland" xml:space="preserve"><value>İsviçre</value></data>
+	<data name="Norway" xml:space="preserve"><value>Norveç</value></data>
+	<data name="Japan" xml:space="preserve"><value>Japonya</value></data>
+	<data name="Portugal" xml:space="preserve"><value>Portekiz</value></data>
+</root>

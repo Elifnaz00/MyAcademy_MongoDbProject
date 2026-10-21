@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="PageTitle" xml:space="preserve"><value>Tours</value></data>
+	<data name="Home" xml:space="preserve"><value>Home</value></data>
+	<data name="Tours" xml:space="preserve"><value>Tours</value></data>
+	<data name="DiscoverTheWorld" xml:space="preserve"><value>Discover the world</value></data>
+	<data name="HeroTitle" xml:space="preserve"><value>Find Your Dream Tour</value></data>
+	<data name="HeroDescription" xml:space="preserve"><value>Discover the right trip for you, from Europe's iconic cities to the captivating destinations of the Far East.</value></data>
+
+	<data name="FilterTours" xml:space="preserve"><value>Filter Tours</value></data>
+	<data name="FilterDescription" xml:space="preserve"><value>Narrow down your options to find the perfect route.</value></data>
+	<data name="SearchTours" xml:space="preserve"><value>Search Tours</value></data>
+	<data name="SearchPlaceholder" xml:space="preserve"><value>Search tours or destinations</value></data>
+	<data name="Destination" xml:space="preserve"><value>Destination</value></data>
+	<data name="TourDuration" xml:space="preserve"><value>Tour Duration</value></data>
+	<data name="PriceRange" xml:space="preserve"><value>Price Range</value></data>
+	<data name="TourType" xml:space="preserve"><value>Tour Type</value></data>
+	<data name="Rating" xml:space="preserve"><value>Rating</value></data>
+	<data name="ApplyFilters" xml:space="preserve"><value>Apply Filters</value></data>
+	<data name="ClearFilters" xml:space="preserve"><value>Clear Filters</value></data>
+	<data name="Filter" xml:space="preserve"><value>Filter</value></data>
+	<data name="Close" xml:space="preserve"><value>Close</value></data>
+	<data name="Previous" xml:space="preserve"><value>Previous</value></data>
+	<data name="Next" xml:space="preserve"><value>Next</value></data>
+
+	<data name="ToursFound" xml:space="preserve"><value>tours found</value></data>
+	<data name="Sort" xml:space="preserve"><value>Sort:</value></data>
+	<data name="Recommended" xml:space="preserve"><value>Recommended</value></data>
+	<data name="HighestRated" xml:space="preserve"><value>Highest Rated</value></data>
+	<data name="PriceLowToHigh" xml:space="preserve"><value>Price: Low to High</value></data>
+	<data name="PriceHighToLow" xml:space="preserve"><value>Price: High to Low</value></data>
+	<data name="NewestTours" xml:space="preserve"><value>Newest Tours</value></data>
+
+	<data name="Days1To3" xml:space="preserve"><value>1–3 Days</value></data>
+	<data name="Days4To5" xml:space="preserve"><value>4–5 Days</value></data>
+	<data name="Days6To7" xml:space="preserve"><value>6–7 Days</value></data>
+	<data name="Days8Plus" xml:space="preserve"><value>8 Days or More</value></data>
+
+	<data name="Price1" xml:space="preserve"><value>₺0–25,000</value></data>
+	<data name="Price2" xml:space="preserve"><value>₺25,000–40,000</value></data>
+	<data name="Price3" xml:space="preserve"><value>₺40,000–60,000</value></data>
+	<data name="Price4" xml:space="preserve"><value>₺60,000 or More</value></data>
+
+	<data name="CultureTours" xml:space="preserve"><value>Cultural Tours</value></data>
+	<data name="CityTours" xml:space="preserve"><value>City Tours</value></data>
+	<data name="NatureAdventure" xml:space="preserve"><value>Nature &amp; Adventure</value></data>
+	<data name="RomanticRoutes" xml:space="preserve"><value>Romantic Routes</value></data>
+	<data name="Gastronomy" xml:space="preserve"><value>Gastronomy</value></data>
+	<data name="WinterNorthernLights" xml:space="preserve"><value>Winter &amp; Northern Lights</value></data>
+	<data name="FarEast" xml:space="preserve"><value>Far East</value></data>
+
+	<data name="Rating45" xml:space="preserve"><value>4.5 and above</value></data>
+	<data name="Rating40" xml:space="preserve"><value>4.0 and above</value></data>
+	<data name="Rating35" xml:space="preserve"><value>3.5 and above</value></data>
+
+	<data name="AddToFavorites" xml:space="preserve"><value>Add to favorites</value></data>
+	<data name="Days" xml:space="preserve"><value>Days</value></data>
+	<data name="Nights" xml:space="preserve"><value>Nights</value></data>
+	<data name="PerPerson" xml:space="preserve"><value>Per person</value></data>
+	<data name="TourDetails" xml:space="preserve"><value>View Tour</value></data>
+
+	<data name="EmptyTitle" xml:space="preserve"><value>No tours match your selected criteria.</value></data>
+	<data name="EmptyDescription" xml:space="preserve"><value>Try relaxing your filters or clear them all to start again.</value></data>
+
+	<data name="HelpUs" xml:space="preserve"><value>Let us help</value></data>
+	<data name="MissingRouteTitle" xml:space="preserve"><value>Couldn't Find the Route You Want?</value></data>
+	<data name="MissingRouteDescription" xml:space="preserve"><value>Tell us about your dream destination and we'll help you find suitable travel options.</value></data>
+	<data name="ContactUs" xml:space="preserve"><value>Contact Us</value></data>
+
+	<data name="France" xml:space="preserve"><value>France</value></data>
+	<data name="Italy" xml:space="preserve"><value>Italy</value></data>
+	<data name="Spain" xml:space="preserve"><value>Spain</value></data>
+	<data name="Netherlands" xml:space="preserve"><value>Netherlands</value></data>
+	<data name="Austria" xml:space="preserve"><value>Austria</value></data>
+	<data name="Switzerland" xml:space="preserve"><value>Switzerland</value></data>
+	<data name="Norway" xml:space="preserve"><value>Norway</value></data>
+	<data name="Japan" xml:space="preserve"><value>Japan</value></data>
+	<data name="Portugal" xml:space="preserve"><value>Portugal</value></data>
+</root>

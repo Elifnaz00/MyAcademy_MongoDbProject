@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="PageTitle" xml:space="preserve"><value>Tur Detayı</value></data>
+	<data name="Home" xml:space="preserve"><value>Ana Sayfa</value></data>
+	<data name="Tours" xml:space="preserve"><value>Turlar</value></data>
+	<data name="Save" xml:space="preserve"><value>Kaydet</value></data>
+	<data name="Share" xml:space="preserve"><value>Paylaş</value></data>
+	<data name="AboutTour" xml:space="preserve"><value>Tur Hakkında</value></data>
+	<data name="TourHighlights" xml:space="preserve"><value>Turun Öne Çıkanları</value></data>
+	<data name="DailyItinerary" xml:space="preserve"><value>Gün Gün Tur Programı</value></data>
+	<data name="Included" xml:space="preserve"><value>Fiyata Dahil Olanlar</value></data>
+	<data name="NotIncluded" xml:space="preserve"><value>Fiyata Dahil Olmayanlar</value></data>
+	<data name="TourInformation" xml:space="preserve"><value>Tur Bilgileri</value></data>
+	<data name="TourDuration" xml:space="preserve"><value>Tur Süresi</value></data>
+	<data name="StartingCity" xml:space="preserve"><value>Başlangıç Şehri</value></data>
+	<data name="Transportation" xml:space="preserve"><value>Ulaşım</value></data>
+	<data name="Accommodation" xml:space="preserve"><value>Konaklama</value></data>
+	<data name="GuideLanguage" xml:space="preserve"><value>Rehber Dili</value></data>
+	<data name="GroupSize" xml:space="preserve"><value>Grup Büyüklüğü</value></data>
+	<data name="Visa" xml:space="preserve"><value>Vize</value></data>
+	<data name="MeetingPoint" xml:space="preserve"><value>Buluşma Noktası</value></data>
+	<data name="GuestReviews" xml:space="preserve"><value>Misafir Yorumları</value></data>
+	<data name="JoinedTour" xml:space="preserve"><value>Bu Tura Katıldın mı?</value></data>
+	<data name="ShareExperience" xml:space="preserve"><value>Deneyimini diğer gezginlerle paylaş.</value></data>
+	<data name="WriteReview" xml:space="preserve"><value>Yorum Yaz</value></data>
+	<data name="TourQuestions" xml:space="preserve"><value>Tur Hakkında Sorular</value></data>
+	<data name="SendQuestion" xml:space="preserve"><value>Soru Gönder</value></data>
+	<data name="PerPerson" xml:space="preserve"><value>Kişi başı</value></data>
+	<data name="TourDate" xml:space="preserve"><value>Tur Tarihi</value></data>
+	<data name="NumberOfPeople" xml:space="preserve"><value>Kişi Sayısı</value></data>
+	<data name="Adults" xml:space="preserve"><value>Yetişkin</value></data>
+	<data name="Children" xml:space="preserve"><value>Çocuk</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>Ara Toplam</value></data>
+	<data name="Total" xml:space="preserve"><value>Toplam</value></data>
+	<data name="BookNow" xml:space="preserve"><value>Rezervasyon Yap</value></data>
+	<data name="SecureBooking" xml:space="preserve"><value>Güvenli rezervasyon</value></data>
+	<data name="FreePreBooking" xml:space="preserve"><value>Ücretsiz ön rezervasyon</value></data>
+	<data name="SimilarTours" xml:space="preserve"><value>Bunları da Beğenebilirsin</value></data>
+	<data name="ShareYourExperience" xml:space="preserve"><value>Deneyimini Paylaş</value></data>
+	<data name="YourRating" xml:space="preserve"><value>Puanın</value></data>
+	<data name="YourComment" xml:space="preserve"><value>Yorumun</value></data>
+	<data name="SubmitComment" xml:space="preserve"><value>Yorumu Gönder</value></data>
+	<data name="Days" xml:space="preserve"><value>Gün</value></data>
+	<data name="Nights" xml:space="preserve"><value>Gece</value></data>
+	<data name="TourRoute" xml:space="preserve"><value>Tur rotası</value></data>
+	<data name="Reviews" xml:space="preserve"><value>değerlendirme</value></data>
+	<data name="Photos" xml:space="preserve"><value>fotoğraf</value></data>
+	<data name="Day" xml:space="preserve"><value>Gün</value></data>
+	<data name="QuestionPlaceholder" xml:space="preserve"><value>Sorunu yaz...</value></data>
+	<data name="QuestionPrompt" xml:space="preserve"><value>Bu tur hakkında merak ettiğin bir şey mi var?</value></data>
+	<data name="QuestionReceived" xml:space="preserve"><value>Sorun alındı! Ekibimiz en kısa sürede yanıtlayacak.</value></data>
+	<data name="PriceIncludesTaxes" xml:space="preserve"><value>Vergiler ve belirtilen hizmetler dahildir.</value></data>
+	<data name="LastQuota" xml:space="preserve"><value>Son {0} kontenjan</value></data>
+	<data name="AdultAge" xml:space="preserve"><value>12 yaş ve üzeri</value></data>
+	<data name="ChildAge" xml:space="preserve"><value>2 - 11 yaş</value></data>
+	<data name="AskQuestion" xml:space="preserve"><value>Soru Gönder</value></data>
+	<data name="ReviewPlaceholder" xml:space="preserve"><value>Tur deneyimini birkaç cümleyle anlat...</value></data>
+	<data name="Popular" xml:space="preserve"><value>Popüler</value></data>
+	<data name="ViewTour" xml:space="preserve"><value>Turu İncele</value></data>
+	<data name="SelectDate" xml:space="preserve"><value>Lütfen tur tarihi seçiniz.</value></data>
+	<data name="BookingSuccess" xml:space="preserve"><value>Rezervasyon başarıyla oluşturuldu.</value></data>
+	<data name="BookingError" xml:space="preserve"><value>Rezervasyon oluşturulurken bir hata oluştu.</value></data>
+	<data name="ShareDemo" xml:space="preserve"><value>Bağlantı panoya kopyalandı.</value></data>
+	<data name="PerPerson" xml:space="preserve"><value>Kişi başı</value></data>
+	<data name="Stars" xml:space="preserve"><value>yıldız</value></data>
+	<data name="Close" xml:space="preserve"><value>Kapat</value></data>
+	<data name="MeetingPointDescription" xml:space="preserve"><value>İstanbul Havalimanı Dış Hatlar Terminali. Tur başlangıcından 3 saat önce rehberimizle buluşma yapılır.</value></data>
+	<data name="TourQuestions" xml:space="preserve">
+  <value>Tur Hakkında Sorular</value>
+</data>
+	<data name="QuestionPrompt" xml:space="preserve">
+  <value>Aklınıza takılan bir soru mu var?</value>
+</data>
+	<data name="QuestionPlaceholder" xml:space="preserve">
+  <value>Sorunuzu buraya yazın...</value>
+</data>
+	<data name="SendQuestion" xml:space="preserve">
+  <value>Soru Gönder</value>
+</data>
+	<data name="QuestionReceived" xml:space="preserve">
+  <value>Sorunuz başarıyla iletildi!</value>
+</data>
+	<data name="NoQuestionsYet" xml:space="preserve">
+  <value>Bu tur için henüz soru sorulmamış.</value>
+</data>
+</root>

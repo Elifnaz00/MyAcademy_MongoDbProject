@@ -1,0 +1,447 @@
+﻿
+@using Travel.Web.DTOs.QıuestionDto
+@model ResultQuestionDto
+
+@{
+    ViewData["Title"] = "Soruyu Cevapla";
+    ViewData["PageTitle"] = "Soruyu Cevapla";
+    ViewData["ActiveMenu"] = "Questions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .reply-page {
+        color: #0e2a3b;
+    }
+
+    .reply-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+    }
+
+        .reply-heading h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .reply-heading p {
+            color: #6a7c88;
+            margin: 0;
+            font-size: .92rem;
+        }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border: 1px solid #e7e2d8;
+        border-radius: 10px;
+        color: #0e2a3b;
+        background: #fff;
+        font-size: .84rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+        .btn-back:hover {
+            background: #f7f5f0;
+            color: #0e2a3b;
+        }
+
+    .reply-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr);
+        gap: 24px;
+        align-items: start;
+    }
+
+    .reply-card {
+        background: #fff;
+        border: 1px solid #e7e2d8;
+        border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(14,42,59,.04);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .reply-card-head {
+        padding: 22px 24px;
+        border-bottom: 1px solid #eef0ef;
+    }
+
+        .reply-card-head h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 6px;
+        }
+
+        .reply-card-head p {
+            color: #6a7c88;
+            font-size: .83rem;
+            margin: 0;
+        }
+
+    .reply-card-body {
+        padding: 24px;
+    }
+
+    .question-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .question-avatar {
+        width: 46px;
+        height: 46px;
+        flex-shrink: 0;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        background: #e3f4f0;
+        color: #0b7f80;
+        font-size: 1.15rem;
+        font-weight: 700;
+    }
+
+    .question-user {
+        font-weight: 700;
+        font-size: .94rem;
+        margin-bottom: 4px;
+    }
+
+    .question-date {
+        color: #6a7c88;
+        font-size: .78rem;
+    }
+
+    .question-content {
+        padding: 20px;
+        background: #fafaf8;
+        border: 1px solid #eef0ef;
+        border-radius: 12px;
+        color: #314957;
+        font-size: .93rem;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+    }
+
+    .question-content-label {
+        display: block;
+        font-size: .76rem;
+        font-weight: 700;
+        color: #6a7c88;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin-bottom: 10px;
+    }
+
+    .form-label-custom {
+        display: block;
+        font-size: .86rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #0e2a3b;
+    }
+
+    .reply-textarea {
+        width: 100%;
+        min-height: 190px;
+        padding: 15px 16px;
+        border: 1px solid #dfe5e4;
+        border-radius: 11px;
+        background: #fff;
+        color: #0e2a3b;
+        font-size: .9rem;
+        line-height: 1.7;
+        resize: vertical;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+        .reply-textarea:focus {
+            outline: none;
+            border-color: #0fa3a3;
+            box-shadow: 0 0 0 3px rgba(15,163,163,.12);
+        }
+
+    .reply-hint {
+        margin-top: 9px;
+        color: #6a7c88;
+        font-size: .78rem;
+        line-height: 1.6;
+    }
+
+    .reply-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid #eef0ef;
+    }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 17px;
+        border: 1px solid #e7e2d8;
+        border-radius: 10px;
+        color: #314957;
+        background: #fff;
+        font-size: .84rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+        .btn-cancel:hover {
+            background: #f7f5f0;
+            color: #0e2a3b;
+        }
+
+    .btn-submit-reply {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 19px;
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        background: #0fa3a3;
+        font-size: .84rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+        .btn-submit-reply:hover {
+            background: #0b7f80;
+            transform: translateY(-1px);
+        }
+
+    .reply-info-icon {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 13px;
+        background: #e3f4f0;
+        color: #0b7f80;
+        font-size: 1.25rem;
+        margin-bottom: 16px;
+    }
+
+    .reply-info h4 {
+        font-family: 'Sora', sans-serif;
+        font-size: .96rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .reply-info p {
+        color: #6a7c88;
+        font-size: .84rem;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .reply-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: #fbf1dc;
+        color: #a9741a;
+        font-size: .76rem;
+        font-weight: 700;
+        margin-top: 18px;
+    }
+
+    .reply-status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #c18a27;
+    }
+
+    .text-danger-custom {
+        display: block;
+        color: #c0392b;
+        font-size: .8rem;
+        margin-top: 7px;
+    }
+
+    @@media (max-width: 900px) {
+        .reply-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .reply-heading h2 {
+            font-size: 1.2rem;
+        }
+
+        .reply-card-head,
+        .reply-card-body {
+            padding: 18px;
+        }
+
+        .reply-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn-cancel,
+        .btn-submit-reply {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="content reply-page">
+
+    <div class="reply-heading">
+        <div>
+            <h2>Soruyu Cevapla</h2>
+            <p>Kullanıcının sorusunu inceleyip yanıtını oluştur.</p>
+        </div>
+
+        <a href="@Url.Action("Index", "Question", new { area = "Admin" })"
+           class="btn-back">
+            <span>←</span>
+            Sorulara Dön
+        </a>
+    </div>
+
+    <div class="reply-layout">
+
+        <div>
+            <!-- Kullanıcının sorusu -->
+            <section class="reply-card">
+                <div class="reply-card-head">
+                    <h3>Gelen Soru</h3>
+                    <p>Kullanıcının tur sayfasından gönderdiği soru.</p>
+                </div>
+
+                <div class="reply-card-body">
+                    <div class="question-label">
+                        <div class="question-avatar">?</div>
+
+                        <div>
+                            <div class="question-user">
+                                @Model.UserName
+                            </div>
+
+                            <div class="question-date">
+                                Gönderilme tarihi:
+                                @Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="question-content-label">
+                        Soru içeriği
+                    </span>
+
+                    <div class="question-content">@Model.QuestionContent</div>
+
+                    <div>
+                        <span class="reply-status">
+                            <span class="reply-status-dot"></span>
+                            Yanıt bekliyor
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cevap formu -->
+            <section class="reply-card">
+                <div class="reply-card-head">
+                    <h3>Yanıtını Oluştur</h3>
+                    <p>Kullanıcıya iletmek istediğin cevabı aşağıya yaz.</p>
+                </div>
+
+                <div class="reply-card-body">
+                    <form asp-area="Admin"
+                          asp-controller="Question"
+                          asp-action="Reply"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="QuestionId"
+                               value="@Model.Id" />
+
+                        <label for="AnsweredText" class="form-label-custom">
+                            Cevap
+                        </label>
+
+                        <textarea id="AnswerContent"
+                                  name="AnsweredText"
+                                  class="reply-textarea"
+                                  placeholder="Kullanıcının sorusuna yanıtını buraya yaz..."
+                                  required
+                                  maxlength="3000"></textarea>
+
+                        <span class="text-danger-custom">
+                            @Html.ValidationMessage("AnsweredText")
+                        </span>
+
+                        <p class="reply-hint">
+                            Yanıtının açık, anlaşılır ve soruyla ilgili olmasına dikkat et.
+                        </p>
+
+                        <div class="reply-actions">
+                            <a href="@Url.Action("Index", "Question", new { area = "Admin" })"
+                               class="btn-cancel">
+                                Vazgeç
+                            </a>
+
+                            <button type="submit" class="btn-submit-reply">
+                                <span>✓</span>
+                                Cevabı Gönder
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sağ bilgi kartı -->
+        <aside>
+            <section class="reply-card">
+                <div class="reply-card-body">
+                    <div class="reply-info-icon">✉</div>
+
+                    <div class="reply-info">
+                        <h4>Yanıt hakkında</h4>
+                        <p>
+                            Kullanıcının sorusunu dikkatlice incele.
+                            Tur detayları, fiyatlar ve rezervasyon koşulları
+                            hakkında doğru ve anlaşılır bir yanıt hazırla.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+    </div>
+</div>

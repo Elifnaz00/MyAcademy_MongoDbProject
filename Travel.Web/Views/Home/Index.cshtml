@@ -1,0 +1,879 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Text.Json
+@using Travel.Web.DTOs.TourDtos
+@using Travel.Web.Models.HomeModels
+
+@model HomeIndexViewModel
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["HeroTitle"].Value + " - Travelio";
+    Layout = "_UserLayout";
+}
+
+<style>
+    /* HERO */
+    .hero {
+        position: relative;
+        min-height: 88vh;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(180deg,rgba(14,42,59,.55) 0%,rgba(14,42,59,.35) 40%,rgba(14,42,59,.72) 100%), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=2000&q=80') center/cover;
+        color: #fff;
+        overflow: hidden;
+    }
+
+    .hero-content {
+        padding: 6rem 0 8rem;
+    }
+
+    .hero h1 {
+        font-weight: 800;
+        font-size: clamp(2.4rem,5vw,4.1rem);
+        line-height: 1.05;
+        letter-spacing: -1px;
+        max-width: 14ch;
+    }
+
+    .hero p.lead {
+        font-size: clamp(1rem,1.4vw,1.22rem);
+        max-width: 52ch;
+        color: rgba(255,255,255,.9);
+        margin-top: 1.2rem;
+    }
+
+    .hero .eyebrow {
+        color: #7fe3e3;
+    }
+
+    /* SEARCH BOX */
+    .search-box {
+        background: rgba(255,255,255,.97);
+        border-radius: 22px;
+        box-shadow: var(--shadow-md);
+        padding: 1rem;
+        margin-top: 2.4rem;
+        max-width: 940px;
+    }
+
+    .search-field {
+        padding: .5rem 1rem;
+        border-right: 1px solid var(--line);
+    }
+
+        .search-field:last-of-type {
+            border-right: none;
+        }
+
+        .search-field label {
+            display: block;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: .15rem;
+        }
+
+        .search-field .control {
+            border: none;
+            outline: none;
+            font-weight: 600;
+            color: var(--navy);
+            font-size: .98rem;
+            width: 100%;
+            background: transparent;
+        }
+
+    .search-box .btn-teal {
+        width: 100%;
+        padding: .95rem;
+    }
+
+    .stats-row {
+        margin-top: 2.4rem;
+        display: flex;
+        gap: 2.6rem;
+        flex-wrap: wrap;
+    }
+
+    .stat b {
+        font-family: 'Sora';
+        font-size: 1.6rem;
+        font-weight: 700;
+        display: block;
+        line-height: 1;
+    }
+
+    .stat span {
+        font-size: .82rem;
+        color: rgba(255,255,255,.8);
+    }
+
+    /* SECTIONS */
+    section {
+        padding: 5.5rem 0;
+    }
+
+    .section-head {
+        max-width: 640px;
+    }
+
+        .section-head h2 {
+            font-weight: 700;
+            font-size: clamp(1.8rem,3vw,2.6rem);
+            letter-spacing: -.5px;
+            margin-top: .6rem;
+        }
+
+        .section-head p {
+            color: var(--muted);
+            margin-top: .5rem;
+        }
+
+    /* TOUR CARDS */
+    .tour-card {
+        background: #fff;
+        border-radius: var(--r);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: .3s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgba(231,226,216,.7);
+    }
+
+        .tour-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+    .tour-media {
+        position: relative;
+        height: 215px;
+        overflow: hidden;
+    }
+
+        .tour-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .5s;
+        }
+
+    .tour-card:hover .tour-media img {
+        transform: scale(1.07);
+    }
+
+    .tour-badge {
+        position: absolute;
+        top: .85rem;
+        left: .85rem;
+        background: rgba(255,255,255,.94);
+        color: var(--navy);
+        font-weight: 600;
+        font-size: .75rem;
+        padding: .32rem .7rem;
+        border-radius: 999px;
+    }
+
+    .fav {
+        position: absolute;
+        top: .75rem;
+        right: .85rem;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.92);
+        display: grid;
+        place-items: center;
+        color: var(--navy);
+        cursor: pointer;
+        border: none;
+        transition: .2s;
+    }
+
+        .fav:hover {
+            color: var(--teal-dark);
+            transform: scale(1.08);
+        }
+
+    .tour-body {
+        padding: 1.25rem 1.35rem 1.4rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .tour-country {
+        font-size: .78rem;
+        color: var(--teal-dark);
+        font-weight: 600;
+        letter-spacing: .02em;
+    }
+
+    .tour-title {
+        font-family: 'Sora';
+        font-weight: 700;
+        font-size: 1.16rem;
+        margin: .2rem 0 .55rem;
+        color: var(--navy);
+    }
+
+    .tour-meta {
+        display: flex;
+        align-items: center;
+        gap: .9rem;
+        font-size: .84rem;
+        color: var(--muted);
+        margin-bottom: 1rem;
+    }
+
+    .rating {
+        color: #0e2a3b;
+        font-weight: 600;
+    }
+
+        .rating .star {
+            color: #f4a92c;
+        }
+
+    .tour-foot {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-top: auto;
+        padding-top: .4rem;
+        border-top: 1px solid var(--line);
+    }
+
+    .price small {
+        color: var(--muted);
+        font-size: .72rem;
+        display: block;
+    }
+
+    .price b {
+        font-family: 'Sora';
+        font-size: 1.32rem;
+        color: var(--navy);
+    }
+
+        .price b span {
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+    .btn-incele {
+        background: var(--navy);
+        color: #fff;
+        border-radius: 999px;
+        font-size: .85rem;
+        font-weight: 600;
+        padding: .55rem 1.1rem;
+        border: none;
+        transition: .25s;
+    }
+
+        .btn-incele:hover {
+            background: var(--teal-dark);
+            color: #fff;
+        }
+
+    /* DESTINATIONS */
+    .dest-section {
+        background: var(--navy);
+        color: #fff;
+    }
+
+        .dest-section .section-head h2 {
+            color: #fff;
+        }
+
+        .dest-section .section-head p {
+            color: rgba(255,255,255,.72);
+        }
+
+        .dest-section .eyebrow {
+            color: #7fe3e3;
+        }
+
+    .dest-card {
+        position: relative;
+        border-radius: var(--r);
+        overflow: hidden;
+        height: 340px;
+        display: block;
+        box-shadow: var(--shadow-md);
+    }
+
+        .dest-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .6s;
+        }
+
+        .dest-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .dest-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,rgba(14,42,59,0) 35%,rgba(14,42,59,.85) 100%);
+        }
+
+        .dest-card.tall {
+            height: calc(680px + 1.5rem);
+        }
+
+    .dest-cap {
+        position: absolute;
+        left: 1.3rem;
+        bottom: 1.2rem;
+        z-index: 2;
+        color: #fff;
+    }
+
+        .dest-cap h3 {
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin: 0;
+        }
+
+        .dest-cap span {
+            font-size: .85rem;
+            opacity: .85;
+        }
+
+    /* WHY */
+    .why-card {
+        background: #fff;
+        border-radius: var(--r);
+        padding: 2rem 1.8rem;
+        height: 100%;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid rgba(231,226,216,.7);
+        transition: .25s;
+    }
+
+        .why-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+    .why-ico {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: rgba(15,163,163,.12);
+        color: var(--teal-dark);
+        display: grid;
+        place-items: center;
+        margin-bottom: 1.1rem;
+    }
+
+    .why-card h4 {
+        font-weight: 700;
+        font-size: 1.12rem;
+        color: var(--navy);
+    }
+
+    .why-card p {
+        color: var(--muted);
+        font-size: .94rem;
+        margin: 0;
+    }
+
+    /* REVIEWS */
+    .review-card {
+        background: #fff;
+        border-radius: var(--r);
+        padding: 1.9rem;
+        height: 100%;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid rgba(231,226,216,.7);
+    }
+
+    .review-stars {
+        color: #f4a92c;
+        font-size: .95rem;
+        margin-bottom: .8rem;
+    }
+
+    .review-card p {
+        color: var(--navy);
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .review-user {
+        display: flex;
+        align-items: center;
+        gap: .8rem;
+        margin-top: 1.3rem;
+    }
+
+        .review-user img {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .review-user b {
+            display: block;
+            color: var(--navy);
+            font-size: .95rem;
+        }
+
+        .review-user span {
+            color: var(--muted);
+            font-size: .82rem;
+        }
+
+    /* CTA */
+    .cta-wrap {
+        border-radius: 28px;
+        overflow: hidden;
+        position: relative;
+        color: #fff;
+        background: linear-gradient(120deg,rgba(11,127,128,.92),rgba(14,42,59,.9)), url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=2000&q=80') center/cover;
+        padding: 4.5rem 2rem;
+    }
+
+        .cta-wrap h2 {
+            font-weight: 800;
+            font-size: clamp(1.8rem,3.2vw,2.7rem);
+            letter-spacing: -.5px;
+        }
+
+        .cta-wrap p {
+            color: rgba(255,255,255,.88);
+            max-width: 52ch;
+            margin: 1rem auto 0;
+        }
+
+    @@media (max-width: 767px) {
+        .search-field {
+            border-right: none;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .dest-card.tall {
+            height: 340px;
+        }
+
+        .hero-content {
+            padding: 5rem 0 6rem;
+        }
+    }
+</style>
+
+<!-- HERO -->
+<header class="hero">
+    <div class="container hero-content">
+
+        <div class="eyebrow mb-3">@Localizer["HeroEyebrow"]</div>
+
+        <h1>@Localizer["HeroTitle"]</h1>
+
+        <p class="lead">
+            @Localizer["HeroDescription"]
+        </p>
+
+        <!-- SEARCH -->
+        <div class="search-box">
+            <form asp-action="Index" asp-controller="Home" method="get">
+            <div class="row g-0 align-items-center">
+                
+                <div class="col-md-3 search-field">
+                    <label>@Localizer["Destination"]</label>
+
+                    <input class="control"
+                           list="dests"
+                           placeholder="@Localizer["WhereToGo"]"
+                           name="DestinationName"
+                           value="@(System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("en") ? "Paris, France" : "Paris, Fransa")" />
+
+                    <datalist id="dests">
+                        <option>@Localizer["CityParis"]</option>
+                        <option>@Localizer["CityRome"]</option>
+                        <option>@Localizer["CityAmsterdam"]</option>
+                        <option>@Localizer["CityTokyo"]</option>
+                        <option>@Localizer["CityBarcelona"]</option>
+                        <option>@Localizer["CityPrague"]</option>
+                    </datalist>
+                </div>
+
+                <div class="col-md-3 search-field">
+                    <label>@Localizer["Date"]</label>
+                    <input class="control" type="date" name="TourDate" />
+                </div>
+
+                <div class="col-md-3 search-field">
+                    <label>@Localizer["NumberOfPeople"]</label>
+
+                    <select class="control" name="Guest">
+                        <option value="1">@Localizer["OnePerson"]</option>
+                        <option value="2" selected>@Localizer["TwoPeople"]</option>
+                        <option value="3">@Localizer["ThreePeople"]</option>
+                        <option value="4">@Localizer["FourPeople"]</option>
+                        <option value="5">@Localizer["FiveOrMorePeople"]</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 p-2">
+                    <button type="submit" class="btn-teal">
+                        @Localizer["SearchTours"]
+                    </button>
+                </div>
+               
+            </div>
+            </form>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat">
+                <b>48+</b>
+                <span>@Localizer["DestinationCount"]</span>
+            </div>
+
+            <div class="stat">
+                <b>1.200+</b>
+                <span>@Localizer["GuidedTours"]</span>
+            </div>
+
+            <div class="stat">
+                <b>92.000</b>
+                <span>@Localizer["HappyTravelers"]</span>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<!-- TOURS -->
+<section id="turlar">
+    <div class="container">
+
+        <div class="d-flex flex-wrap justify-content-between align-items-end mb-5">
+            <div class="section-head">
+
+                <div class="eyebrow">@Localizer["PopularRoutes"]</div>
+
+                <h2>@Localizer["MostPopularTours"]</h2>
+
+                <p>
+                    @Localizer["PopularToursDescription"]
+                </p>
+
+            </div>
+
+            <a href="#turlar"
+               class="btn btn-teal d-none d-md-inline-block mt-3">
+                @Localizer["ViewAllTours"]
+            </a>
+        </div>
+
+        <div class="row g-4" id="tourGrid">
+
+            @foreach (var tour in Model.PopularTours)
+            {
+                var destination = Model.DestinationLookup
+                .GetValueOrDefault(tour.DestinationId);
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="tour-card">
+
+                        <div class="tour-media">
+                            <img src="@tour.ImageUrl"
+                                 alt="@tour.Name"
+                                 loading="lazy" />
+
+                            <form method="post"
+                                  asp-action="Create"
+                                  asp-controller="Favorite">
+                                <input type="hidden"
+                                       name="TourId"
+                                       value="@tour.Id" />
+
+                                <button type="submit"
+                                        class="fav"
+                                        aria-label="@Localizer["AddToFavorites"]"
+                                        title="@Localizer["AddToFavorites"]">
+                                    <svg width="18"
+                                         height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="2">
+                                        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="tour-body">
+
+                            <div class="tour-country">
+                                @destination?.Country
+                            </div>
+
+                            <h3 class="tour-title">
+                                @tour.Name
+                            </h3>
+
+                            <div class="tour-meta">
+                                <span>
+                                    🗓️ @tour.DayTimeDuration
+                                </span>
+
+                                <span class="rating">
+                                    <span class="star">★</span>
+                                </span>
+                            </div>
+
+                            <div class="tour-foot">
+                                <div class="price">
+                                    <small>@Localizer["PerPerson"]</small>
+
+                                    <b>
+                                        @tour.Price.ToString("N0")
+                                        <span>TL</span>
+                                    </b>
+                                </div>
+
+                                <a asp-controller="Tour"
+                                   asp-action="Details"
+                                   asp-route-id="@tour.Id"
+                                   class="btn-incele">
+                                    @Localizer["ViewTour"]
+                                </a>
+                            </div>
+
+                        </div>
+                    </article>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+
+<!-- DESTINATIONS -->
+@await Component.InvokeAsync("PopularDestinationList")
+
+<!-- WHY -->
+<section id="hakkimizda">
+    <div class="container">
+
+        <div class="section-head mb-5">
+            <div class="eyebrow">@Localizer["WhyUs"]</div>
+
+            <h2>@Localizer["WhyTravelio"]</h2>
+
+            <p>
+                @Localizer["WhyTravelioDescription"]
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="why-card">
+
+                    <div class="why-ico">
+                        <svg width="24"
+                             height="24"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                    </div>
+
+                    <h4>@Localizer["CarefullySelectedRoutes"]</h4>
+
+                    <p>
+                        @Localizer["CarefullySelectedRoutesDescription"]
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="why-card">
+
+                    <div class="why-ico">
+                        <svg width="24"
+                             height="24"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </div>
+
+                    <h4>@Localizer["NoHiddenFees"]</h4>
+
+                    <p>
+                        @Localizer["NoHiddenFeesDescription"]
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="why-card">
+
+                    <div class="why-ico">
+                        <svg width="24"
+                             height="24"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                            <line x1="6" y1="1" x2="6" y2="4" />
+                            <line x1="10" y1="1" x2="10" y2="4" />
+                            <line x1="14" y1="1" x2="14" y2="4" />
+                        </svg>
+                    </div>
+
+                    <h4>@Localizer["Support247"]</h4>
+
+                    <p>
+                        @Localizer["Support247Description"]
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="yorumlar" style="background:#fff">
+    <div class="container">
+
+        <div class="section-head mb-5">
+            <div class="eyebrow">@Localizer["TravelerReviews"]</div>
+
+            <h2>@Localizer["WhatTravelersSay"]</h2>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="review-card">
+
+                    <div class="review-stars">★★★★★</div>
+
+                    <p>@Localizer["ReviewParisText"]</p>
+
+                    <div class="review-user">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+                             alt="" />
+
+                        <div>
+                            <b>Elif Yıldız</b>
+                            <span>@Localizer["ReviewParisRoute"]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="review-card">
+
+                    <div class="review-stars">★★★★★</div>
+
+                    <p>@Localizer["ReviewRomeText"]</p>
+
+                    <div class="review-user">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80"
+                             alt="" />
+
+                        <div>
+                            <b>Mert Kaya</b>
+                            <span>@Localizer["ReviewRomeRoute"]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="review-card">
+
+                    <div class="review-stars">★★★★★</div>
+
+                    <p>@Localizer["ReviewSwissText"]</p>
+
+                    <div class="review-user">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80"
+                             alt="" />
+
+                        <div>
+                            <b>Zeynep Demir</b>
+                            <span>@Localizer["ReviewSwissRoute"]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section id="iletisim">
+    <div class="container">
+
+        <div class="cta-wrap text-center">
+
+            <div class="eyebrow" style="color:#7fe3e3">
+                @Localizer["NextStopIsYou"]
+            </div>
+
+            <h2 class="mt-2">
+                @Localizer["NextAdventureTitle"]
+            </h2>
+
+            <p>
+                @Localizer["NextAdventureDescription"]
+            </p>
+
+            <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
+
+                <a href="#turlar" class="btn btn-teal">
+                    @Localizer["DiscoverTours"]
+                </a>
+
+                <a href="#" class="btn-ghost">
+                    @Localizer["ContactUs"]
+                </a>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+    </script>
+}

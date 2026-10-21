@@ -1,0 +1,1629 @@
+﻿@using System.Text.Json
+@using Travel.Web.DTOs.TourDtos
+@using Travel.Web.Entities.Enums
+@model List<ResultTourByCategoryDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .crumb {
+        font-size: .8rem;
+        color: var(--muted);
+        margin-bottom: .4rem;
+    }
+
+        .crumb a {
+            color: var(--muted);
+        }
+
+            .crumb a:hover {
+                color: var(--teal-dark);
+            }
+
+        .crumb .cur {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+    .page-intro {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+    }
+
+        .page-intro h1 {
+            font-weight: 700;
+            font-size: 1.7rem;
+            color: var(--navy);
+            margin: .15rem 0 .3rem;
+        }
+
+        .page-intro p {
+            color: var(--muted);
+            margin: 0;
+            font-size: .94rem;
+            max-width: 60ch;
+        }
+
+    .btn-teal {
+        background: var(--teal);
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        font-weight: 600;
+        padding: .7rem 1.3rem;
+        font-size: .9rem;
+        transition: .25s;
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        white-space: nowrap;
+    }
+
+        .btn-teal:hover {
+            background: var(--teal-dark);
+            color: #fff;
+            box-shadow: 0 12px 26px rgba(15,163,163,.3);
+        }
+
+    /* KPI */
+
+    .kpi {
+        background: #fff;
+        border: 1px solid var(--line-2);
+        border-radius: var(--r);
+        box-shadow: var(--shadow-sm);
+        padding: 1rem 1.1rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+    }
+
+        .kpi .ic {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            background: rgba(15,163,163,.1);
+            color: var(--teal-dark);
+            flex: none;
+        }
+
+            .kpi .ic.gray {
+                background: rgba(106,124,136,.12);
+                color: var(--muted);
+            }
+
+            .kpi .ic.warn {
+                background: rgba(169,116,26,.12);
+                color: #a9741a;
+            }
+
+        .kpi .num {
+            font-family: 'Sora';
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .kpi .lab {
+            font-size: .82rem;
+            color: var(--muted);
+            margin-top: .15rem;
+        }
+
+    /* CARD */
+
+    .card-x {
+        background: #fff;
+        border: 1px solid var(--line-2);
+        border-radius: var(--r);
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* FILTER */
+
+    .filter-bar {
+        padding: 1rem 1.1rem;
+    }
+
+    .f-search {
+        position: relative;
+    }
+
+        .f-search svg {
+            position: absolute;
+            left: .85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .f-search input {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: var(--cream);
+            border-radius: 11px;
+            padding: .62rem .9rem .62rem 2.3rem;
+            font-size: .9rem;
+            outline: none;
+            color: var(--navy);
+        }
+
+            .f-search input:focus {
+                border-color: var(--teal);
+                background: #fff;
+                box-shadow: 0 0 0 3px rgba(15,163,163,.1);
+            }
+
+    .f-select {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 11px;
+        padding: .62rem 2rem .62rem .9rem;
+        font-size: .88rem;
+        font-weight: 500;
+        color: var(--navy);
+        outline: none;
+        cursor: pointer;
+    }
+
+        .f-select:focus {
+            border-color: var(--teal);
+        }
+
+    .btn-clear {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        padding: .62rem 1rem;
+        font-size: .86rem;
+        font-weight: 600;
+        color: var(--muted);
+        cursor: pointer;
+        transition: .2s;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+        .btn-clear:hover {
+            border-color: var(--cancel-fg);
+            color: var(--cancel-fg);
+        }
+
+    .result-line {
+        font-size: .86rem;
+        color: var(--muted);
+        margin: .2rem 0 1rem;
+        padding: 0 .2rem;
+    }
+
+        .result-line b {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+    /* BULK */
+
+    .bulk-bar {
+        display: none;
+        align-items: center;
+        gap: .8rem;
+        background: var(--navy);
+        color: #fff;
+        border-radius: 12px;
+        padding: .6rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+        .bulk-bar.show {
+            display: flex;
+        }
+
+        .bulk-bar b {
+            font-family: 'Sora';
+            font-size: .9rem;
+        }
+
+        .bulk-bar .bulk-btn {
+            margin-left: auto;
+            background: rgba(255,255,255,.12);
+            border: none;
+            color: #fff;
+            border-radius: 999px;
+            padding: .35rem .9rem;
+            font-size: .82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+            .bulk-bar .bulk-btn + .bulk-btn {
+                margin-left: .5rem;
+            }
+
+            .bulk-bar .bulk-btn:hover {
+                background: rgba(255,255,255,.22);
+            }
+
+            .bulk-bar .bulk-btn.danger:hover {
+                background: var(--cancel-fg);
+            }
+
+    /* TABLE */
+
+    .tbl-wrap {
+        overflow-x: auto;
+    }
+
+    table.tx {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        min-width: 1020px;
+    }
+
+        table.tx th {
+            font-size: .74rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--muted);
+            font-weight: 600;
+            text-align: left;
+            padding: .75rem 1rem;
+            border-bottom: 1px solid var(--line);
+            white-space: nowrap;
+        }
+
+            table.tx th.sortable {
+                cursor: pointer;
+                user-select: none;
+            }
+
+                table.tx th.sortable:hover {
+                    color: var(--teal-dark);
+                }
+
+            table.tx th .sar {
+                opacity: .4;
+                margin-left: .2rem;
+            }
+
+            table.tx th.sorted .sar {
+                opacity: 1;
+                color: var(--teal-dark);
+            }
+
+        table.tx td {
+            padding: .8rem 1rem;
+            border-bottom: 1px solid var(--line-2);
+            font-size: .88rem;
+            color: var(--navy);
+            vertical-align: middle;
+        }
+
+        table.tx tbody tr {
+            transition: .15s;
+        }
+
+            table.tx tbody tr:hover {
+                background: var(--cream);
+            }
+
+    .chk {
+        width: 17px;
+        height: 17px;
+        accent-color: var(--teal-dark);
+        cursor: pointer;
+    }
+
+    .tour-cell {
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+        min-width: 220px;
+    }
+
+        .tour-cell img {
+            width: 52px;
+            height: 52px;
+            border-radius: 11px;
+            object-fit: cover;
+            flex: none;
+        }
+
+        .tour-cell b {
+            font-family: 'Sora';
+            font-weight: 600;
+            font-size: .9rem;
+            color: var(--navy);
+            display: block;
+            line-height: 1.25;
+        }
+
+        .tour-cell span {
+            font-size: .78rem;
+            color: var(--teal-dark);
+            font-weight: 500;
+        }
+
+    .cat-pill {
+        font-size: .76rem;
+        color: var(--navy);
+        background: var(--cream);
+        border: 1px solid var(--line);
+        padding: .22rem .6rem;
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+
+    .amount {
+        font-family: 'Sora';
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .muted-cell {
+        color: var(--muted);
+        white-space: nowrap;
+    }
+
+    .cap {
+        min-width: 96px;
+    }
+
+        .cap .cap-top {
+            font-size: .84rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: .28rem;
+        }
+
+            .cap .cap-top .full {
+                color: var(--cancel-fg);
+            }
+
+    .cap-track {
+        height: 5px;
+        background: var(--line-2);
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .cap-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: var(--teal);
+    }
+
+        .cap-fill.high {
+            background: #e0a83d;
+        }
+
+        .cap-fill.full {
+            background: var(--cancel-fg);
+        }
+
+    .badge-x {
+        font-size: .74rem;
+        font-weight: 600;
+        padding: .28rem .7rem;
+        border-radius: 999px;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+    }
+
+        .badge-x::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+    .b-ok {
+        background: var(--ok-bg);
+        color: var(--ok-fg);
+    }
+
+    .b-pasif {
+        background: var(--cancel-bg);
+        color: var(--cancel-fg);
+    }
+
+    .b-taslak {
+        background: var(--wait-bg);
+        color: var(--wait-fg);
+    }
+
+    /* ACTIONS */
+
+    .act-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: #fff;
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        cursor: pointer;
+        transition: .2s;
+    }
+
+        .act-btn:hover {
+            border-color: var(--teal);
+            color: var(--teal-dark);
+        }
+
+    .dropdown-menu {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+        padding: .4rem;
+        font-size: .88rem;
+        min-width: 180px;
+    }
+
+    .dropdown-item {
+        border-radius: 8px;
+        padding: .5rem .7rem;
+        font-weight: 500;
+        color: var(--navy);
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+    }
+
+        .dropdown-item:hover {
+            background: var(--cream);
+            color: var(--teal-dark);
+        }
+
+        .dropdown-item svg {
+            color: var(--muted);
+        }
+
+        .dropdown-item:hover svg {
+            color: var(--teal-dark);
+        }
+
+        .dropdown-item.danger {
+            color: var(--cancel-fg);
+        }
+
+            .dropdown-item.danger svg {
+                color: var(--cancel-fg);
+            }
+
+            .dropdown-item.danger:hover {
+                background: var(--cancel-bg);
+            }
+
+    /* PAGINATION */
+
+    .pager-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+    }
+
+    .pager {
+        display: flex;
+        gap: .35rem;
+    }
+
+        .pager a {
+            min-width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: #fff;
+            border: 1px solid var(--line);
+            color: var(--navy);
+            font-weight: 600;
+            font-size: .88rem;
+            transition: .2s;
+            padding: 0 .3rem;
+        }
+
+            .pager a:hover {
+                border-color: var(--teal);
+                color: var(--teal-dark);
+            }
+
+            .pager a.active {
+                background: var(--navy);
+                color: #fff;
+                border-color: var(--navy);
+            }
+
+            .pager a.disabled {
+                opacity: .45;
+                pointer-events: none;
+            }
+
+    .per-page {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: .85rem;
+        color: var(--muted);
+    }
+
+        .per-page select {
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            padding: .35rem 1.6rem .35rem .6rem;
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--navy);
+            outline: none;
+            cursor: pointer;
+        }
+
+    /* EMPTY */
+
+    .empty {
+        text-align: center;
+        padding: 3.5rem 1rem;
+    }
+
+        .empty .eic {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(15,163,163,.1);
+            color: var(--teal-dark);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 1rem;
+        }
+
+        .empty h3 {
+            font-family: 'Sora';
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1.2rem;
+        }
+
+        .empty p {
+            color: var(--muted);
+            margin: .3rem 0 1.2rem;
+        }
+
+    .modal-content {
+        border-radius: var(--r);
+        border: none;
+    }
+</style>
+
+<div class="content">
+
+    <!-- INTRO -->
+
+    <div class="crumb">
+        <a href="admin-dashboard.html">Dashboard</a>
+        /
+        <span class="cur">Turlar</span>
+    </div>
+
+    <div class="page-intro">
+
+        <div>
+
+            <h1>Tur Yönetimi</h1>
+
+            <p>
+                Travelio'daki tüm turları görüntüleyebilir,
+                filtreleyebilir ve yönetebilirsiniz.
+            </p>
+
+        </div>
+
+        <a href="admin-tour-create.html" class="btn-teal">
+
+            <svg width="17" height="17"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+
+            </svg>
+
+            Yeni Tur Ekle
+
+        </a>
+
+    </div>
+
+    <!-- KPI -->
+    @await Component.InvokeAsync("TourInformation")
+
+    <!-- FILTER BAR -->
+
+    <div class="card-x filter-bar mb-3">
+
+        <div class="row g-2 align-items-center">
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="f-search">
+
+                    <svg width="16" height="16"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21"
+                              x2="16.65"
+                              y2="16.65" />
+
+                    </svg>
+
+                    <input type="text"
+                           id="fSearch"
+                           placeholder="Tur adı veya destinasyon ara...">
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <select class="f-select" id="fDest">
+
+                    <option value="">Tüm Destinasyonlar</option>
+
+                    <option>Fransa</option>
+                    <option>İtalya</option>
+                    <option>İspanya</option>
+                    <option>Hollanda</option>
+                    <option>Avusturya</option>
+                    <option>İsviçre</option>
+                    <option>Norveç</option>
+                    <option>Japonya</option>
+                    <option>Portekiz</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4">
+
+                <select class="f-select" id="fCat">
+
+                    <option value="">Tüm Kategoriler</option>
+
+                    <option>Kültür Turu</option>
+                    <option>Şehir Turu</option>
+                    <option>Doğa & Macera</option>
+                    <option>Romantik Rota</option>
+                    <option>Gastronomi</option>
+                    <option>Kış & Kuzey Işıkları</option>
+                    <option>Uzak Doğu</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4">
+
+                <select class="f-select" id="fStatus">
+
+                    <option value="">Tüm Durumlar</option>
+                    <option value="Aktif">Aktif</option>
+                    <option value="Pasif">Pasif</option>
+                    <option value="Taslak">Taslak</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-1 col-md-4">
+
+                <button class="btn-clear"
+                        onclick="clearFilters()">
+
+                    Temizle
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="result-line">
+        <b id="resultCount">12</b>
+        tur listeleniyor
+    </div>
+
+    <!-- BULK -->
+
+    <div class="bulk-bar" id="bulkBar">
+
+        <b id="bulkCount">
+            0 tur seçildi
+        </b>
+
+        <a href="/Admin/Tour/ToggleTourStatus/Id" class="bulk-btn"
+                >
+            Aktif Yap
+        </a>
+
+        <a href="/Admin/Tour/ToggleTourStatus/Id" class="bulk-btn">
+            Pasif Yap
+        </a>
+
+        <button class="bulk-btn danger"
+                onclick="bulkDelete()">
+            Sil
+        </button>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="card-x mb-3">
+
+        <div class="tbl-wrap">
+
+            <table class="tx">
+
+                <thead>
+
+                    <tr>
+
+                        <th style="width:36px">
+                            <input type="checkbox"
+                                   class="chk"
+                                   id="checkAll"
+                                   onchange="toggleAll(this)">
+                        </th>
+
+                        <th class="sortable"
+                            onclick="sortBy('title')">
+                            Tur
+                            <span class="sar">↕</span>
+                        </th>
+
+                        <th>Kategori</th>
+
+                        <th>Süre</th>
+
+                        <th class="sortable"
+                            onclick="sortBy('price')">
+                            Fiyat
+                            <span class="sar">↕</span>
+                        </th>
+
+                       
+
+                        <th>Kontenjan</th>
+
+                       
+
+                        <th>Durum</th>
+
+                        <th style="width:56px">
+                            İşlemler
+                        </th>
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var tour in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox"
+                                       class="chk row-chk"
+                                       value="@tour.Id">
+                            </td>
+
+                            <td>
+                                <div class="tour-cell">
+                                    <img src="@tour.ImageUrl" alt="">
+
+                                    <div>
+                                        <b>@tour.Name</b>
+                                        <span>@tour.TourType</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="cat-pill">
+                                    @tour.Category.Name
+                                </span>
+                            </td>
+
+                            <td class="muted-cell">
+                                @tour.DayTimeDuration gün /
+                                @tour.NightTimeDuration gece
+                            </td>
+
+                            <td>
+                                <span class="amount">
+                                    @tour.Price.ToString("N0") TL
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="cap">
+
+                                    <div class="cap-top">
+                                        @tour.MaxQuota
+                                    </div>
+
+                                    <div class="cap-track">
+                                        <div class="cap-fill"></div>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge-x">
+                                    @tour.State
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button"
+                                            class="act-btn"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        ⋮
+                                    </button>
+
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="@Url.Action("ToggleTourStatus", "Tour", new { area = "Admin", id = tour.Id })">
+
+                                                <svg width="15" height="15"
+                                                     viewBox="0 0 24 24"
+                                                     fill="none"
+                                                     stroke="currentColor"
+                                                     stroke-width="2"
+                                                     stroke-linecap="round"
+                                                     stroke-linejoin="round">
+
+                                                    <path d="M21 12a9 9 0 1 1-9-9" />
+                                                    <polyline points="21 3 21 9 15 9" />
+
+                                                </svg>
+
+                                                @(tour.State == TourState.Active ? "Pasif Yap" : "Aktif Yap")
+
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="@Url.Action("GetTour", "Tour", new { area = "Admin", id = tour.Id })">
+                                                Görüntüle
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="@Url.Action("DownloadParticipantsExcel", "Tour", new { area = "Admin", id = tour.Id })">
+                                                <i class="bi bi-file-earmark-excel me-2"></i>
+                                                Excel Raporu
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="@Url.Action("DownloadParticipantsPdf", "Tour", new { area = "Admin", id = tour.Id })">
+                                                <i class="bi bi-file-earmark-pdf me-2"></i>
+                                                PDF Raporu
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="@Url.Action("Edit", "Tour", new { area = "Admin", id = tour.Id })">
+                                                Düzenle
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item danger"
+                                               href="@Url.Action("Delete", "Tour", new { area = "Admin", id = tour.Id })">
+                                                Sil
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                
+
+            </table>
+
+        </div>
+
+        <div id="emptyState" style="display:none">
+
+            <div class="empty">
+
+                <div class="eic">
+
+                    <svg width="26" height="26"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21"
+                              x2="16.65"
+                              y2="16.65" />
+
+                    </svg>
+
+                </div>
+
+                <h3>Tur bulunamadı</h3>
+
+                <p>
+                    Arama veya filtre kriterlerinizi değiştirerek
+                    tekrar deneyebilirsiniz.
+                </p>
+
+                <button class="btn-teal"
+                        style="margin:0 auto"
+                        onclick="clearFilters()">
+
+                    Filtreleri Temizle
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="pager-row" id="pagerRow">
+
+            <div class="per-page">
+
+                Sayfa başına
+
+                <select id="perPage">
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                </select>
+
+            </div>
+
+            <div class="pager">
+
+                <a href="#" class="disabled">
+                    Önceki
+                </a>
+
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+
+                <a href="#">
+                    Sonraki
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- DELETE MODAL -->
+
+<div class="modal fade"
+     id="delModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-body text-center p-4">
+
+                <div style="width:56px;height:56px;border-radius:16px;background:var(--cancel-bg);color:var(--cancel-fg);display:grid;place-items:center;margin:0 auto 1rem">
+
+                    <svg width="26" height="26"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+
+                    </svg>
+
+                </div>
+
+                <h5 style="font-family:'Sora';font-weight:700;color:var(--navy)">
+                    Turu Sil
+                </h5>
+
+                <p style="color:var(--muted);font-size:.92rem;margin-bottom:.2rem"
+                   id="delMsg">
+                </p>
+
+                <p style="color:var(--muted);font-size:.82rem">
+                    Bu işlem geri alınamaz.
+                </p>
+
+                <div class="d-flex gap-2 justify-content-center mt-3">
+
+                    <button class="btn-clear"
+                            style="width:auto;padding:.6rem 1.3rem"
+                            data-bs-dismiss="modal">
+
+                        Vazgeç
+
+                    </button>
+
+                    <a href="" class="btn-teal" id="confirmDeleteBtn"
+                            style="background:var(--cancel-fg)"
+                    >
+
+                        Turu Sil
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        const IMG = {
+            roma: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=160&q=80",
+            paris: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=160&q=80",
+            amsterdam: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=160&q=80",
+            prag: "https://images.unsplash.com/photo-1541849546-216549ae216d?auto=format&fit=crop&w=160&q=80",
+            barcelona: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=160&q=80",
+            swiss: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=160&q=80",
+            norway: "https://images.unsplash.com/photo-1483347756197-71ef80e95f73?auto=format&fit=crop&w=160&q=80",
+            tokyo: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=160&q=80",
+            lisbon: "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?auto=format&fit=crop&w=160&q=80",
+            alsace: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=160&q=80",
+            amalfi: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=160&q=80",
+            salzburg: "https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?auto=format&fit=crop&w=160&q=80"
+        };
+
+       
+
+        let sortKey = null;
+        let sortDir = 1;
+
+        const fmt = n =>
+            n.toLocaleString("tr-TR");
+
+        const statusClass = {
+            Aktif: "b-ok",
+            Pasif: "b-pasif",
+            Taslak: "b-taslak"
+        };
+
+       
+
+        function capClass(res, cap) {
+
+            const p = cap
+                ? res / cap
+                : 0;
+
+            if (res >= cap && cap > 0) {
+                return "full";
+            }
+
+            if (p >= .85) {
+                return "high";
+            }
+
+            return "";
+        }
+
+        function render() {
+
+            
+
+            const tb =
+                document.getElementById("tourRows");
+
+        
+
+            const tours= @Html.Raw(JsonSerializer.Serialize(Model))
+            console.log(tours)
+
+            tb.innerHTML = tours.map(t => {
+
+                const cc =
+                    capClass(t.res, t.cap);
+
+                const pct =
+                    t.cap
+                        ? Math.min(
+                            100,
+                            Math.round(t.res / t.cap * 100)
+                        )
+                        : 0;
+
+                return `
+
+                    <tr data-id="${t.id}">
+
+                        <td>
+                            <input type="checkbox"
+                                   class="chk row-chk"
+                                   value="${t.id}"
+                                   onchange="updateBulk()">
+                        </td>
+
+                        <td>
+
+                            <div class="tour-cell">
+
+                                <img src="${t.ImageUrl}"
+                                     alt="">
+
+                                <div>
+
+                                    <b>${t.Name}</b>
+
+                                    <span>
+                                        ${t.TourType}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <span class="cat-pill">
+                                ${t.Category.Name}
+                            </span>
+                        </td>
+
+                        <td class="muted-cell">
+                            ${t.DayTimeDuration} gün / ${t.NightTimeDuration} gece
+                        </td>
+
+                        <td>
+                            <span class="amount">
+                                ${fmt(t.Price)} TL
+                            </span>
+                        </td>
+
+                      
+
+                        <td>
+
+                            <div class="cap">
+
+                                <div class="cap-top">
+
+                                    ${t.res} / ${t.MaxQuota}
+
+                                    ${
+                                        cc === "full"
+                                            ? '<span class="full">· Dolu</span>'
+                                            : ''
+                                    }
+
+                                </div>
+
+                                <div class="cap-track">
+
+                                    <div class="cap-fill ${cc}"
+                                         style="width:${pct}%">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                      
+                        <td>
+
+                            <span class="badge-x ${statusClass[t.status]}">
+                                ${t.State}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="dropdown">
+
+                                <button class="act-btn"
+                                        data-bs-toggle="dropdown"
+                                        aria-label="İşlemler">
+
+                                    <svg width="18" height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="currentColor">
+
+                                        <circle cx="12" cy="5" r="1.7"/>
+                                        <circle cx="12" cy="12" r="1.7"/>
+                                        <circle cx="12" cy="19" r="1.7"/>
+
+                                    </svg>
+
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           href="tour-detail.html">
+
+                                            <svg width="15" height="15"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                                                <circle cx="12" cy="12" r="3"/>
+
+                                            </svg>
+
+                                            Görüntüle
+
+                                        </a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           href="admin-tour-edit.html">
+
+                                            <svg width="15" height="15"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/>
+
+                                            </svg>
+
+                                            Düzenle
+
+                                        </a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           href="#"
+                                           onclick="copyTour(${t.id});return false">
+
+                                            <svg width="15" height="15"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <rect x="9" y="9"
+                                                      width="13"
+                                                      height="13"
+                                                      rx="2"/>
+
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+
+                                            </svg>
+
+                                            Kopyala
+
+                                        </a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           href="#"
+                                           onclick="toggleStatus(${t.id});return false">
+
+                                            <svg width="15" height="15"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <path d="M21 12a9 9 0 1 1-9-9"/>
+                                                <polyline points="21 3 21 9 15 9"/>
+
+                                            </svg>
+
+                                            ${
+                                                t.status === "Aktif"
+                                                    ? "Pasif Yap"
+                                                    : "Aktif Yap"
+                                            }
+
+                                        </a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a class="dropdown-item danger"
+                                           href="#"
+                                           onclick="askDelete(${t.id});return false">
+
+                                            <svg width="15" height="15"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <polyline points="3 6 5 6 21 6"/>
+                                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+
+                                            </svg>
+
+                                            Sil
+
+                                        </a>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                `;
+
+            }).join("");
+
+            document.getElementById("checkAll").checked = false;
+
+            updateBulk();
+        }
+
+
+        /* SORTING */
+
+        function sortBy(key) {
+
+            if (sortKey === key) {
+                sortDir *= -1;
+            }
+            else {
+                sortKey = key;
+                sortDir = 1;
+            }
+
+            document
+                .querySelectorAll("th.sortable")
+                .forEach(th =>
+                    th.classList.remove("sorted")
+                );
+
+            event.currentTarget.classList.add("sorted");
+
+            render();
+        }
+
+
+        /* FILTERS */
+
+        ["fSearch", "fDest", "fCat", "fStatus"]
+            .forEach(id => {
+
+                document
+                    .getElementById(id)
+                    .addEventListener("input", render);
+
+                document
+                    .getElementById(id)
+                    .addEventListener("change", render);
+
+            });
+
+
+        function clearFilters() {
+
+            document.getElementById("fSearch").value = "";
+            document.getElementById("fDest").value = "";
+            document.getElementById("fCat").value = "";
+            document.getElementById("fStatus").value = "";
+
+            sortKey = null;
+            sortDir = 1;
+
+            document
+                .querySelectorAll("th.sortable")
+                .forEach(th =>
+                    th.classList.remove("sorted")
+                );
+
+            render();
+        }
+
+
+        
+
+        /* COPY */
+
+        function copyTour(id) {
+
+            const t =
+                TOURS.find(x => x.id === id);
+
+            const copy = {
+                ...t,
+                id: Math.max(...TOURS.map(x => x.id)) + 1,
+                title: t.title + " (Kopya)",
+                res: 0,
+                status: "Taslak"
+            };
+
+            TOURS.splice(
+                TOURS.indexOf(t) + 1,
+                0,
+                copy
+            );
+
+            render();
+        }
+
+
+        /* DELETE */
+
+        let delId = null;
+
+        function askDelete(id) {
+
+                delId = id;
+
+        const t =
+            TOURS.find(x => x.id === id);
+
+        document.getElementById("delMsg").innerHTML =
+            `"<b style="color:var(--navy)">${t.Name}</b>" turunu silmek istediğinize emin misiniz?`;
+
+        document.getElementById("confirmDeleteBtn").href =
+            `/Admin/Tour/Delete/${id}`;
+
+        new bootstrap.Modal(
+            document.getElementById("delModal")
+        ).show();
+        }
+
+      
+
+
+        /* BULK */
+
+        function toggleAll(cb) {
+
+            document
+                .querySelectorAll(".row-chk")
+                .forEach(c =>
+                    c.checked = cb.checked
+                );
+
+            updateBulk();
+        }
+
+        function selectedIds() {
+
+            return [
+                ...document.querySelectorAll(
+                    ".row-chk:checked"
+                )
+            ].map(c => +c.value);
+        }
+
+        function updateBulk() {
+
+            const ids = selectedIds();
+
+            const bar =
+                document.getElementById("bulkBar");
+
+            bar.classList.toggle(
+                "show",
+                ids.length > 0
+            );
+
+            document.getElementById("bulkCount")
+                .textContent =
+                ids.length + " tur seçildi";
+        }
+
+     
+
+        function bulkDelete() {
+
+            const ids = selectedIds();
+
+            TOURS =
+                TOURS.filter(
+                    x => !ids.includes(x.id)
+                );
+
+            render();
+        }
+
+
+        render();
+
+    </script>
+}

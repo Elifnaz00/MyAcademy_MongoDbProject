@@ -18,6 +18,39 @@ Projenin temel hedefleri:
 
 ## ✨ Özellikler
 
+
+## 🗄️ MongoDB Doküman Modelleme
+
+Travelio, NoSQL veritabanı olarak MongoDB ve veri erişimi için MongoDB.Driver kullanılarak geliştirilmiştir.
+
+Veri modelleri, MongoDB'nin doküman tabanlı yapısına uygun şekilde tasarlanmıştır. Özellikle birbiriyle ilişkili tur bilgilerinin uygun durumlarda tek bir doküman içerisinde tutulmasını sağlayan **iç içe doküman (Nested Document / Embedded Document) modelleme yaklaşımı** kullanılmıştır.
+
+### İç İçe Doküman Yapısı
+
+`Tour` dokümanı içerisinde aşağıdaki gibi turla ilişkili bilgiler tutulabilir:
+
+- **Tur Tarihleri:** Birden fazla tur tarihi ve her tarihe özel kontenjan bilgileri.
+- **Günlük Tur Programı:** Gün gün tur programı, açıklamalar ve şehir bilgileri.
+- **Görsel Galerisi:** Tura ait görseller.
+- **Öne Çıkan Özellikler:** Turun sunduğu özellikler ve avantajlar.
+
+Bu yaklaşım, birbiriyle yakından ilişkili tur verilerinin aynı doküman içerisinde tutulmasını sağlar ve MongoDB'nin gömülü doküman modelleme özelliklerinden yararlanır.
+
+### Ayrı Koleksiyonlar
+
+Diğer iş alanlarına ait veriler ise kendi koleksiyonlarında yönetilmektedir:
+
+- `Tours` — Turlar
+- `Destinations` — Destinasyonlar
+- `Categories` — Kategoriler
+- `Reservations` — Rezervasyonlar
+- `Users` — Kullanıcılar
+- `Comments` — Yorumlar
+- `Questions` — Sorular ve cevaplar
+- `Favorites` — Favoriler
+
+Bu yapı, turla doğrudan ilişkili ayrıntılar için gömülü doküman modellemesini; diğer iş alanları için ise ayrı koleksiyon yaklaşımını bir arada ele alır.
+
 ### 🏠 Ana Sayfa ve Tur Keşfi
 - Tur ve destinasyon bilgilerinin dinamik olarak listelenmesi.
 - Popüler destinasyonların görüntülenmesi.

@@ -202,15 +202,25 @@ Proje, ASP.NET Core MVC yaklaşımıyla geliştirilmiştir. Sorumluluklar contro
 ### 4. Yönetim Paneli ve Raporlama
 
 ![MongoDB Proje Görseli 27](screenshots/mongoson.png)
+
 ![MongoDB Proje Görseli 18](screenshots/mongo18.png)
+
 ![MongoDB Proje Görseli 19](screenshots/mongo19.png)
+
 ![MongoDB Proje Görseli 20](screenshots/mongo20.png)
+
 ![MongoDB Proje Görseli 21](screenshots/mongo21.png)
+
 ![MongoDB Proje Görseli 22](screenshots/mongo22.png)
+
 ![MongoDB Proje Görseli 23](screenshots/mongo18.png)
+
 ![MongoDB Proje Görseli 24](screenshots/mongo19.png)
+
 ![MongoDB Proje Görseli 25](screenshots/mongo20.png)
+
 ![MongoDB Proje Görseli 26](screenshots/mongo21.png)
+
 ![MongoDB Proje Görseli 27](screenshots/mongo22.png)
 
 

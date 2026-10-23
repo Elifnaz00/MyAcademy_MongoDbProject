@@ -159,33 +159,37 @@ Proje, ASP.NET Core MVC yaklaşımıyla geliştirilmiştir. Sorumluluklar contro
 
 ## 🖼️ Proje Ekran Görüntüleri
 
-### 1. Ana Sayfa ve Tur Listeleme
+### 1. Ana Sayfa ve Tur Sayfası
 
 ![MongoDB Proje Görseli 1](screenshots/mongo1.png)
 ![MongoDB Proje Görseli 2](screenshots/mongo2.png)
 ![MongoDB Proje Görseli 3](screenshots/mongo3.png)
-![MongoDB Proje Görseli 4](screenshots/mongo4.png)
-
-### 2. Tur Detayları ve Kullanıcı İşlemleri
-
 ![MongoDB Proje Görseli 5](screenshots/mongo5.png)
 ![MongoDB Proje Görseli 6](screenshots/mongo6.png)
+
+### 1. İngilizce Arayüz Örneği
+![MongoDB Proje Görseli 4](screenshots/mongo4.png)
+
+### 2. Tur Detay Sayfası ~ Gün Gün Tur Programı ~ Rezervasyon ~ Yorumlar ~ Sorular
 ![MongoDB Proje Görseli 7](screenshots/mongo7.png)
 ![MongoDB Proje Görseli 8](screenshots/mongo8.png)
 ![MongoDB Proje Görseli 9](screenshots/mongo9.png)
 ![MongoDB Proje Görseli 10](screenshots/mongo10.png)
 
-### 3. Rezervasyon, Yorum ve Soru-Cevap
+### 3. Kullanıcı Giriş ve Kayıt Ekranları
 
 ![MongoDB Proje Görseli 11](screenshots/mongo11.png)
 ![MongoDB Proje Görseli 12](screenshots/mongo12.png)
+
+### 4. Kullanıcı ~ Rezervasyonlarım ~ Yorumlarım ~ Sorularım ~ Favorilerim
 ![MongoDB Proje Görseli 13](screenshots/mongo13.png)
 ![MongoDB Proje Görseli 14](screenshots/mongo14.png)
 ![MongoDB Proje Görseli 15](screenshots/mongo15.png)
+![MongoDB Proje Görseli 16](screenshots/mongo16.png)
 
 ### 4. Yönetim Paneli ve Raporlama
 
-![MongoDB Proje Görseli 16](screenshots/mongo16.png)
+![MongoDB Proje Görseli 27](screenshots/mongoson.png)
 ![MongoDB Proje Görseli 18](screenshots/mongo18.png)
 ![MongoDB Proje Görseli 19](screenshots/mongo19.png)
 ![MongoDB Proje Görseli 20](screenshots/mongo20.png)
@@ -196,7 +200,7 @@ Proje, ASP.NET Core MVC yaklaşımıyla geliştirilmiştir. Sorumluluklar contro
 ![MongoDB Proje Görseli 25](screenshots/mongo20.png)
 ![MongoDB Proje Görseli 26](screenshots/mongo21.png)
 ![MongoDB Proje Görseli 27](screenshots/mongo22.png)
-![MongoDB Proje Görseli 27](screenshots/mongoson.png)
+
 
 
 ## 🎯 Projede Edinilen Deneyimler
